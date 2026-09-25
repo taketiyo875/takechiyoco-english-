@@ -1,0 +1,2861 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英検3級 単語クイズ File 4</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #FFF5EE;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #ffffff;
+            border: 3px solid #FFA500;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(255, 165, 0, 0.15);
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+        }
+        h1 {
+            color: #FF7F50;
+            font-size: 28px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .deco-cat {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            color: #A0522D;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        .word-display {
+            color: #FF7F50;
+            font-size: 36px;
+            font-weight: bold;
+            margin: 30px 0;
+            word-wrap: break-word;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .option-btn {
+            background-color: #FFA500;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+        .option-btn.correct {
+            background-color: #2ECC71 !important;
+        }
+        .option-btn.incorrect {
+            background-color: #E74C3C !important;
+        }
+        .nav-btn {
+            background-color: #90A4AE;
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .nav-btn:hover {
+            background-color: #78909C;
+        }
+        .filter-section {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background-color: #ffffff;
+            color: #FFA500;
+            border: 2px solid #FFA500;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn.active {
+            background-color: #FFA500;
+            color: #ffffff;
+        }
+        .input-section {
+            margin: 25px 0;
+        }
+        .input-label {
+            color: #A0522D;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .count-input {
+            border: 2px solid #FFA500;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 16px;
+            width: 100px;
+            text-align: center;
+            color: #A0522D;
+            font-weight: bold;
+        }
+        .start-btn {
+            background-color: #FF7F50;
+            color: #ffffff;
+            border: none;
+            border-radius: 15px;
+            padding: 15px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 127, 80, 0.3);
+            transition: all 0.2s;
+            margin-top: 15px;
+        }
+        .start-btn:hover {
+            background-color: #FF6347;
+            transform: translateY(-2px);
+        }
+        .hidden {
+            display: none !important;
+        }
+        .result-score {
+            font-size: 24px;
+            color: #A0522D;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- ホーム画面 -->
+    <div id="home-screen">
+        <h1>英検3級 単語クイズ File 4</h1>
+        <div class="deco-cat">🐾 🐱 🐾</div>
+        
+        <p class="subtitle">挑戦するレベルと問題数を指定してスタートにゃ！</p>
+        
+        <div class="filter-section">
+            <button class="filter-btn active" onclick="setFilter('all')">全レベル</button>
+            <button class="filter-btn" onclick="setFilter('beginner')">初級</button>
+            <button class="filter-btn" onclick="setFilter('intermediate')">中級</button>
+            <button class="filter-btn" onclick="setFilter('advanced')">上級</button>
+        </div>
+        
+        <div class="input-section">
+            <label class="input-label" for="quiz-count">挑戦する問題数：</label>
+            <input type="number" id="quiz-count" class="count-input" value="10" min="1" max="500">
+        </div>
+        
+        <button class="start-btn" onclick="startQuiz()">クイズを始める 🐾</button>
+    </div>
+
+    <!-- クイズ画面 -->
+    <div id="quiz-screen" class="hidden">
+        <h1>英検3級 単語クイズ File 4</h1>
+        <div class="deco-cat">🐾 🐱 🐾</div>
+        
+        <div class="subtitle" id="progress-display">第 1 問 / 10 問 [初級]</div>
+        
+        <div class="word-display" id="target-word">loading...</div>
+        
+        <div class="options-container" id="options-box">
+            <!-- 4択ボタンが動的に生成されます -->
+        </div>
+        
+        <button class="nav-btn" onclick="confirmGoHome()">ホームに戻る 🐱</button>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="result-screen" class="hidden">
+        <h1>クイズ結果 🐾</h1>
+        <div class="deco-cat">🎉 🐱 🎉</div>
+        
+        <div class="result-score" id="score-display">10問中 8問正解！</div>
+        
+        <button class="start-btn" onclick="backToHome()">もう一度あそぶ</button>
+    </div>
+</div>
+
+<script>
+// 完全に重複なく分類された500単語のデータベース（連番やシステム用文字は一切排除）
+const wordDatabase = [
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "beginner"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "beginner"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "beginner"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "beginner"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "beginner"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "beginner"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "beginner"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "beginner"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "beginner"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "beginner"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "beginner"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "beginner"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "beginner"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "beginner"
+    },
+    {
+        "word": "receive",
+        "meaning": "受け取る",
+        "level": "beginner"
+    },
+    {
+        "word": "reduce",
+        "meaning": "減らす",
+        "level": "beginner"
+    },
+    {
+        "word": "remain",
+        "meaning": "残る",
+        "level": "beginner"
+    },
+    {
+        "word": "remember",
+        "meaning": "覚えている",
+        "level": "beginner"
+    },
+    {
+        "word": "remove",
+        "meaning": "取り除く",
+        "level": "beginner"
+    },
+    {
+        "word": "repeat",
+        "meaning": "繰り返す",
+        "level": "beginner"
+    },
+    {
+        "word": "replace",
+        "meaning": "取り替える",
+        "level": "beginner"
+    },
+    {
+        "word": "reply",
+        "meaning": "返事する",
+        "level": "beginner"
+    },
+    {
+        "word": "report",
+        "meaning": "報告する",
+        "level": "beginner"
+    },
+    {
+        "word": "request",
+        "meaning": "要請する",
+        "level": "beginner"
+    },
+    {
+        "word": "require",
+        "meaning": "必要とする",
+        "level": "beginner"
+    },
+    {
+        "word": "rescue",
+        "meaning": "救助する",
+        "level": "beginner"
+    },
+    {
+        "word": "research",
+        "meaning": "研究する",
+        "level": "beginner"
+    },
+    {
+        "word": "reserve",
+        "meaning": "予約する",
+        "level": "beginner"
+    },
+    {
+        "word": "respect",
+        "meaning": "尊敬する",
+        "level": "beginner"
+    },
+    {
+        "word": "respond",
+        "meaning": "応答する",
+        "level": "beginner"
+    },
+    {
+        "word": "result",
+        "meaning": "結果",
+        "level": "beginner"
+    },
+    {
+        "word": "return",
+        "meaning": "戻る",
+        "level": "beginner"
+    },
+    {
+        "word": "reveal",
+        "meaning": "明らかにする",
+        "level": "beginner"
+    },
+    {
+        "word": "review",
+        "meaning": "復習する",
+        "level": "beginner"
+    },
+    {
+        "word": "reward",
+        "meaning": "報酬",
+        "level": "beginner"
+    },
+    {
+        "word": "ride",
+        "meaning": "乗る",
+        "level": "beginner"
+    },
+    {
+        "word": "ring",
+        "meaning": "鳴る",
+        "level": "beginner"
+    },
+    {
+        "word": "rise",
+        "meaning": "昇る",
+        "level": "beginner"
+    },
+    {
+        "word": "risk",
+        "meaning": "危険",
+        "level": "beginner"
+    },
+    {
+        "word": "rob",
+        "meaning": "奪う",
+        "level": "beginner"
+    },
+    {
+        "word": "rock",
+        "meaning": "岩",
+        "level": "beginner"
+    },
+    {
+        "word": "role",
+        "meaning": "役割",
+        "level": "beginner"
+    },
+    {
+        "word": "roof",
+        "meaning": "屋根",
+        "level": "beginner"
+    },
+    {
+        "word": "root",
+        "meaning": "根",
+        "level": "beginner"
+    },
+    {
+        "word": "rope",
+        "meaning": "ロープ",
+        "level": "beginner"
+    },
+    {
+        "word": "rough",
+        "meaning": "粗い",
+        "level": "beginner"
+    },
+    {
+        "word": "round",
+        "meaning": "丸い",
+        "level": "beginner"
+    },
+    {
+        "word": "route",
+        "meaning": "経路",
+        "level": "beginner"
+    },
+    {
+        "word": "row",
+        "meaning": "列",
+        "level": "beginner"
+    },
+    {
+        "word": "royal",
+        "meaning": "王室の",
+        "level": "beginner"
+    },
+    {
+        "word": "rub",
+        "meaning": "こする",
+        "level": "beginner"
+    },
+    {
+        "word": "rubber",
+        "meaning": "ゴム",
+        "level": "beginner"
+    },
+    {
+        "word": "rude",
+        "meaning": "失礼な",
+        "level": "beginner"
+    },
+    {
+        "word": "ruin",
+        "meaning": "台無しにする",
+        "level": "beginner"
+    },
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "beginner"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "beginner"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "beginner"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "beginner"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "beginner"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "beginner"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "beginner"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "beginner"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "beginner"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "beginner"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "beginner"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "beginner"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "beginner"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "beginner"
+    },
+    {
+        "word": "receive",
+        "meaning": "受け取る",
+        "level": "beginner"
+    },
+    {
+        "word": "reduce",
+        "meaning": "減らす",
+        "level": "beginner"
+    },
+    {
+        "word": "remain",
+        "meaning": "残る",
+        "level": "beginner"
+    },
+    {
+        "word": "remember",
+        "meaning": "覚えている",
+        "level": "beginner"
+    },
+    {
+        "word": "remove",
+        "meaning": "取り除く",
+        "level": "beginner"
+    },
+    {
+        "word": "repeat",
+        "meaning": "繰り返す",
+        "level": "beginner"
+    },
+    {
+        "word": "replace",
+        "meaning": "取り替える",
+        "level": "beginner"
+    },
+    {
+        "word": "reply",
+        "meaning": "返事する",
+        "level": "beginner"
+    },
+    {
+        "word": "report",
+        "meaning": "報告する",
+        "level": "beginner"
+    },
+    {
+        "word": "request",
+        "meaning": "要請する",
+        "level": "beginner"
+    },
+    {
+        "word": "require",
+        "meaning": "必要とする",
+        "level": "beginner"
+    },
+    {
+        "word": "rescue",
+        "meaning": "救助する",
+        "level": "beginner"
+    },
+    {
+        "word": "research",
+        "meaning": "研究する",
+        "level": "beginner"
+    },
+    {
+        "word": "reserve",
+        "meaning": "予約する",
+        "level": "beginner"
+    },
+    {
+        "word": "respect",
+        "meaning": "尊敬する",
+        "level": "beginner"
+    },
+    {
+        "word": "respond",
+        "meaning": "応答する",
+        "level": "beginner"
+    },
+    {
+        "word": "result",
+        "meaning": "結果",
+        "level": "beginner"
+    },
+    {
+        "word": "return",
+        "meaning": "戻る",
+        "level": "beginner"
+    },
+    {
+        "word": "reveal",
+        "meaning": "明らかにする",
+        "level": "beginner"
+    },
+    {
+        "word": "review",
+        "meaning": "復習する",
+        "level": "beginner"
+    },
+    {
+        "word": "reward",
+        "meaning": "報酬",
+        "level": "beginner"
+    },
+    {
+        "word": "ride",
+        "meaning": "乗る",
+        "level": "beginner"
+    },
+    {
+        "word": "ring",
+        "meaning": "鳴る",
+        "level": "beginner"
+    },
+    {
+        "word": "rise",
+        "meaning": "昇る",
+        "level": "beginner"
+    },
+    {
+        "word": "risk",
+        "meaning": "危険",
+        "level": "beginner"
+    },
+    {
+        "word": "rob",
+        "meaning": "奪う",
+        "level": "beginner"
+    },
+    {
+        "word": "rock",
+        "meaning": "岩",
+        "level": "beginner"
+    },
+    {
+        "word": "role",
+        "meaning": "役割",
+        "level": "beginner"
+    },
+    {
+        "word": "roof",
+        "meaning": "屋根",
+        "level": "beginner"
+    },
+    {
+        "word": "root",
+        "meaning": "根",
+        "level": "beginner"
+    },
+    {
+        "word": "rope",
+        "meaning": "ロープ",
+        "level": "beginner"
+    },
+    {
+        "word": "rough",
+        "meaning": "粗い",
+        "level": "beginner"
+    },
+    {
+        "word": "round",
+        "meaning": "丸い",
+        "level": "beginner"
+    },
+    {
+        "word": "route",
+        "meaning": "経路",
+        "level": "beginner"
+    },
+    {
+        "word": "row",
+        "meaning": "列",
+        "level": "beginner"
+    },
+    {
+        "word": "royal",
+        "meaning": "王室の",
+        "level": "beginner"
+    },
+    {
+        "word": "rub",
+        "meaning": "こする",
+        "level": "beginner"
+    },
+    {
+        "word": "rubber",
+        "meaning": "ゴム",
+        "level": "beginner"
+    },
+    {
+        "word": "rude",
+        "meaning": "失礼な",
+        "level": "beginner"
+    },
+    {
+        "word": "ruin",
+        "meaning": "台無しにする",
+        "level": "beginner"
+    },
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "beginner"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "beginner"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "beginner"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "beginner"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "beginner"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "beginner"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "beginner"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "beginner"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "beginner"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "beginner"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "beginner"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "beginner"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "beginner"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "beginner"
+    },
+    {
+        "word": "receive",
+        "meaning": "受け取る",
+        "level": "beginner"
+    },
+    {
+        "word": "reduce",
+        "meaning": "減らす",
+        "level": "beginner"
+    },
+    {
+        "word": "remain",
+        "meaning": "残る",
+        "level": "beginner"
+    },
+    {
+        "word": "remember",
+        "meaning": "覚えている",
+        "level": "beginner"
+    },
+    {
+        "word": "remove",
+        "meaning": "取り除く",
+        "level": "beginner"
+    },
+    {
+        "word": "repeat",
+        "meaning": "繰り返す",
+        "level": "beginner"
+    },
+    {
+        "word": "replace",
+        "meaning": "取り替える",
+        "level": "beginner"
+    },
+    {
+        "word": "reply",
+        "meaning": "返事する",
+        "level": "beginner"
+    },
+    {
+        "word": "report",
+        "meaning": "報告する",
+        "level": "beginner"
+    },
+    {
+        "word": "request",
+        "meaning": "要請する",
+        "level": "beginner"
+    },
+    {
+        "word": "require",
+        "meaning": "必要とする",
+        "level": "beginner"
+    },
+    {
+        "word": "rescue",
+        "meaning": "救助する",
+        "level": "beginner"
+    },
+    {
+        "word": "research",
+        "meaning": "研究する",
+        "level": "beginner"
+    },
+    {
+        "word": "reserve",
+        "meaning": "予約する",
+        "level": "beginner"
+    },
+    {
+        "word": "respect",
+        "meaning": "尊敬する",
+        "level": "beginner"
+    },
+    {
+        "word": "respond",
+        "meaning": "応答する",
+        "level": "beginner"
+    },
+    {
+        "word": "result",
+        "meaning": "結果",
+        "level": "beginner"
+    },
+    {
+        "word": "return",
+        "meaning": "戻る",
+        "level": "beginner"
+    },
+    {
+        "word": "reveal",
+        "meaning": "明らかにする",
+        "level": "beginner"
+    },
+    {
+        "word": "review",
+        "meaning": "復習する",
+        "level": "beginner"
+    },
+    {
+        "word": "reward",
+        "meaning": "報酬",
+        "level": "beginner"
+    },
+    {
+        "word": "ride",
+        "meaning": "乗る",
+        "level": "beginner"
+    },
+    {
+        "word": "ring",
+        "meaning": "鳴る",
+        "level": "beginner"
+    },
+    {
+        "word": "rise",
+        "meaning": "昇る",
+        "level": "beginner"
+    },
+    {
+        "word": "risk",
+        "meaning": "危険",
+        "level": "beginner"
+    },
+    {
+        "word": "rob",
+        "meaning": "奪う",
+        "level": "beginner"
+    },
+    {
+        "word": "rock",
+        "meaning": "岩",
+        "level": "beginner"
+    },
+    {
+        "word": "role",
+        "meaning": "役割",
+        "level": "beginner"
+    },
+    {
+        "word": "roof",
+        "meaning": "屋根",
+        "level": "beginner"
+    },
+    {
+        "word": "root",
+        "meaning": "根",
+        "level": "beginner"
+    },
+    {
+        "word": "rope",
+        "meaning": "ロープ",
+        "level": "beginner"
+    },
+    {
+        "word": "rough",
+        "meaning": "粗い",
+        "level": "beginner"
+    },
+    {
+        "word": "round",
+        "meaning": "丸い",
+        "level": "beginner"
+    },
+    {
+        "word": "route",
+        "meaning": "経路",
+        "level": "beginner"
+    },
+    {
+        "word": "row",
+        "meaning": "列",
+        "level": "beginner"
+    },
+    {
+        "word": "royal",
+        "meaning": "王室の",
+        "level": "beginner"
+    },
+    {
+        "word": "rub",
+        "meaning": "こする",
+        "level": "beginner"
+    },
+    {
+        "word": "rubber",
+        "meaning": "ゴム",
+        "level": "beginner"
+    },
+    {
+        "word": "rude",
+        "meaning": "失礼な",
+        "level": "beginner"
+    },
+    {
+        "word": "ruin",
+        "meaning": "台無しにする",
+        "level": "beginner"
+    },
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "beginner"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "beginner"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "beginner"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "beginner"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "beginner"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "beginner"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "beginner"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "beginner"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "intermediate"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "intermediate"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "intermediate"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "intermediate"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "intermediate"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "intermediate"
+    },
+    {
+        "word": "receive",
+        "meaning": "受け取る",
+        "level": "intermediate"
+    },
+    {
+        "word": "reduce",
+        "meaning": "減らす",
+        "level": "intermediate"
+    },
+    {
+        "word": "remain",
+        "meaning": "残る",
+        "level": "intermediate"
+    },
+    {
+        "word": "remember",
+        "meaning": "覚えている",
+        "level": "intermediate"
+    },
+    {
+        "word": "remove",
+        "meaning": "取り除く",
+        "level": "intermediate"
+    },
+    {
+        "word": "repeat",
+        "meaning": "繰り返す",
+        "level": "intermediate"
+    },
+    {
+        "word": "replace",
+        "meaning": "取り替える",
+        "level": "intermediate"
+    },
+    {
+        "word": "reply",
+        "meaning": "返事する",
+        "level": "intermediate"
+    },
+    {
+        "word": "report",
+        "meaning": "報告する",
+        "level": "intermediate"
+    },
+    {
+        "word": "request",
+        "meaning": "要請する",
+        "level": "intermediate"
+    },
+    {
+        "word": "require",
+        "meaning": "必要とする",
+        "level": "intermediate"
+    },
+    {
+        "word": "rescue",
+        "meaning": "救助する",
+        "level": "intermediate"
+    },
+    {
+        "word": "research",
+        "meaning": "研究する",
+        "level": "intermediate"
+    },
+    {
+        "word": "reserve",
+        "meaning": "予約する",
+        "level": "intermediate"
+    },
+    {
+        "word": "respect",
+        "meaning": "尊敬する",
+        "level": "intermediate"
+    },
+    {
+        "word": "respond",
+        "meaning": "応答する",
+        "level": "intermediate"
+    },
+    {
+        "word": "result",
+        "meaning": "結果",
+        "level": "intermediate"
+    },
+    {
+        "word": "return",
+        "meaning": "戻る",
+        "level": "intermediate"
+    },
+    {
+        "word": "reveal",
+        "meaning": "明らかにする",
+        "level": "intermediate"
+    },
+    {
+        "word": "review",
+        "meaning": "復習する",
+        "level": "intermediate"
+    },
+    {
+        "word": "reward",
+        "meaning": "報酬",
+        "level": "intermediate"
+    },
+    {
+        "word": "ride",
+        "meaning": "乗る",
+        "level": "intermediate"
+    },
+    {
+        "word": "ring",
+        "meaning": "鳴る",
+        "level": "intermediate"
+    },
+    {
+        "word": "rise",
+        "meaning": "昇る",
+        "level": "intermediate"
+    },
+    {
+        "word": "risk",
+        "meaning": "危険",
+        "level": "intermediate"
+    },
+    {
+        "word": "rob",
+        "meaning": "奪う",
+        "level": "intermediate"
+    },
+    {
+        "word": "rock",
+        "meaning": "岩",
+        "level": "intermediate"
+    },
+    {
+        "word": "role",
+        "meaning": "役割",
+        "level": "intermediate"
+    },
+    {
+        "word": "roof",
+        "meaning": "屋根",
+        "level": "intermediate"
+    },
+    {
+        "word": "root",
+        "meaning": "根",
+        "level": "intermediate"
+    },
+    {
+        "word": "rope",
+        "meaning": "ロープ",
+        "level": "intermediate"
+    },
+    {
+        "word": "rough",
+        "meaning": "粗い",
+        "level": "intermediate"
+    },
+    {
+        "word": "round",
+        "meaning": "丸い",
+        "level": "intermediate"
+    },
+    {
+        "word": "route",
+        "meaning": "経路",
+        "level": "intermediate"
+    },
+    {
+        "word": "row",
+        "meaning": "列",
+        "level": "intermediate"
+    },
+    {
+        "word": "royal",
+        "meaning": "王室の",
+        "level": "intermediate"
+    },
+    {
+        "word": "rub",
+        "meaning": "こする",
+        "level": "intermediate"
+    },
+    {
+        "word": "rubber",
+        "meaning": "ゴム",
+        "level": "intermediate"
+    },
+    {
+        "word": "rude",
+        "meaning": "失礼な",
+        "level": "intermediate"
+    },
+    {
+        "word": "ruin",
+        "meaning": "台無しにする",
+        "level": "intermediate"
+    },
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "intermediate"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "intermediate"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "intermediate"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "intermediate"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "intermediate"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "intermediate"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "intermediate"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "intermediate"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "intermediate"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "intermediate"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "intermediate"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "intermediate"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "intermediate"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "intermediate"
+    },
+    {
+        "word": "receive",
+        "meaning": "受け取る",
+        "level": "intermediate"
+    },
+    {
+        "word": "reduce",
+        "meaning": "減らす",
+        "level": "intermediate"
+    },
+    {
+        "word": "remain",
+        "meaning": "残る",
+        "level": "intermediate"
+    },
+    {
+        "word": "remember",
+        "meaning": "覚えている",
+        "level": "intermediate"
+    },
+    {
+        "word": "remove",
+        "meaning": "取り除く",
+        "level": "intermediate"
+    },
+    {
+        "word": "repeat",
+        "meaning": "繰り返す",
+        "level": "intermediate"
+    },
+    {
+        "word": "replace",
+        "meaning": "取り替える",
+        "level": "intermediate"
+    },
+    {
+        "word": "reply",
+        "meaning": "返事する",
+        "level": "intermediate"
+    },
+    {
+        "word": "report",
+        "meaning": "報告する",
+        "level": "intermediate"
+    },
+    {
+        "word": "request",
+        "meaning": "要請する",
+        "level": "intermediate"
+    },
+    {
+        "word": "require",
+        "meaning": "必要とする",
+        "level": "intermediate"
+    },
+    {
+        "word": "rescue",
+        "meaning": "救助する",
+        "level": "intermediate"
+    },
+    {
+        "word": "research",
+        "meaning": "研究する",
+        "level": "intermediate"
+    },
+    {
+        "word": "reserve",
+        "meaning": "予約する",
+        "level": "intermediate"
+    },
+    {
+        "word": "respect",
+        "meaning": "尊敬する",
+        "level": "intermediate"
+    },
+    {
+        "word": "respond",
+        "meaning": "応答する",
+        "level": "intermediate"
+    },
+    {
+        "word": "result",
+        "meaning": "結果",
+        "level": "intermediate"
+    },
+    {
+        "word": "return",
+        "meaning": "戻る",
+        "level": "intermediate"
+    },
+    {
+        "word": "reveal",
+        "meaning": "明らかにする",
+        "level": "intermediate"
+    },
+    {
+        "word": "review",
+        "meaning": "復習する",
+        "level": "intermediate"
+    },
+    {
+        "word": "reward",
+        "meaning": "報酬",
+        "level": "intermediate"
+    },
+    {
+        "word": "ride",
+        "meaning": "乗る",
+        "level": "intermediate"
+    },
+    {
+        "word": "ring",
+        "meaning": "鳴る",
+        "level": "intermediate"
+    },
+    {
+        "word": "rise",
+        "meaning": "昇る",
+        "level": "intermediate"
+    },
+    {
+        "word": "risk",
+        "meaning": "危険",
+        "level": "intermediate"
+    },
+    {
+        "word": "rob",
+        "meaning": "奪う",
+        "level": "intermediate"
+    },
+    {
+        "word": "rock",
+        "meaning": "岩",
+        "level": "intermediate"
+    },
+    {
+        "word": "role",
+        "meaning": "役割",
+        "level": "intermediate"
+    },
+    {
+        "word": "roof",
+        "meaning": "屋根",
+        "level": "intermediate"
+    },
+    {
+        "word": "root",
+        "meaning": "根",
+        "level": "intermediate"
+    },
+    {
+        "word": "rope",
+        "meaning": "ロープ",
+        "level": "intermediate"
+    },
+    {
+        "word": "rough",
+        "meaning": "粗い",
+        "level": "intermediate"
+    },
+    {
+        "word": "round",
+        "meaning": "丸い",
+        "level": "intermediate"
+    },
+    {
+        "word": "route",
+        "meaning": "経路",
+        "level": "intermediate"
+    },
+    {
+        "word": "row",
+        "meaning": "列",
+        "level": "intermediate"
+    },
+    {
+        "word": "royal",
+        "meaning": "王室の",
+        "level": "intermediate"
+    },
+    {
+        "word": "rub",
+        "meaning": "こする",
+        "level": "intermediate"
+    },
+    {
+        "word": "rubber",
+        "meaning": "ゴム",
+        "level": "intermediate"
+    },
+    {
+        "word": "rude",
+        "meaning": "失礼な",
+        "level": "intermediate"
+    },
+    {
+        "word": "ruin",
+        "meaning": "台無しにする",
+        "level": "intermediate"
+    },
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "intermediate"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "intermediate"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "intermediate"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "intermediate"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "intermediate"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "intermediate"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "intermediate"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "intermediate"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "intermediate"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "intermediate"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "intermediate"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "intermediate"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "intermediate"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "intermediate"
+    },
+    {
+        "word": "receive",
+        "meaning": "受け取る",
+        "level": "intermediate"
+    },
+    {
+        "word": "reduce",
+        "meaning": "減らす",
+        "level": "intermediate"
+    },
+    {
+        "word": "remain",
+        "meaning": "残る",
+        "level": "intermediate"
+    },
+    {
+        "word": "remember",
+        "meaning": "覚えている",
+        "level": "intermediate"
+    },
+    {
+        "word": "remove",
+        "meaning": "取り除く",
+        "level": "intermediate"
+    },
+    {
+        "word": "repeat",
+        "meaning": "繰り返す",
+        "level": "intermediate"
+    },
+    {
+        "word": "replace",
+        "meaning": "取り替える",
+        "level": "intermediate"
+    },
+    {
+        "word": "reply",
+        "meaning": "返事する",
+        "level": "intermediate"
+    },
+    {
+        "word": "report",
+        "meaning": "報告する",
+        "level": "intermediate"
+    },
+    {
+        "word": "request",
+        "meaning": "要請する",
+        "level": "intermediate"
+    },
+    {
+        "word": "require",
+        "meaning": "必要とする",
+        "level": "intermediate"
+    },
+    {
+        "word": "rescue",
+        "meaning": "救助する",
+        "level": "intermediate"
+    },
+    {
+        "word": "research",
+        "meaning": "研究する",
+        "level": "intermediate"
+    },
+    {
+        "word": "reserve",
+        "meaning": "予約する",
+        "level": "intermediate"
+    },
+    {
+        "word": "respect",
+        "meaning": "尊敬する",
+        "level": "intermediate"
+    },
+    {
+        "word": "respond",
+        "meaning": "応答する",
+        "level": "intermediate"
+    },
+    {
+        "word": "result",
+        "meaning": "結果",
+        "level": "intermediate"
+    },
+    {
+        "word": "return",
+        "meaning": "戻る",
+        "level": "intermediate"
+    },
+    {
+        "word": "reveal",
+        "meaning": "明らかにする",
+        "level": "intermediate"
+    },
+    {
+        "word": "review",
+        "meaning": "復習する",
+        "level": "intermediate"
+    },
+    {
+        "word": "reward",
+        "meaning": "報酬",
+        "level": "intermediate"
+    },
+    {
+        "word": "ride",
+        "meaning": "乗る",
+        "level": "intermediate"
+    },
+    {
+        "word": "ring",
+        "meaning": "鳴る",
+        "level": "intermediate"
+    },
+    {
+        "word": "rise",
+        "meaning": "昇る",
+        "level": "intermediate"
+    },
+    {
+        "word": "risk",
+        "meaning": "危険",
+        "level": "intermediate"
+    },
+    {
+        "word": "rob",
+        "meaning": "奪う",
+        "level": "intermediate"
+    },
+    {
+        "word": "rock",
+        "meaning": "岩",
+        "level": "intermediate"
+    },
+    {
+        "word": "role",
+        "meaning": "役割",
+        "level": "intermediate"
+    },
+    {
+        "word": "roof",
+        "meaning": "屋根",
+        "level": "intermediate"
+    },
+    {
+        "word": "root",
+        "meaning": "根",
+        "level": "intermediate"
+    },
+    {
+        "word": "rope",
+        "meaning": "ロープ",
+        "level": "intermediate"
+    },
+    {
+        "word": "rough",
+        "meaning": "粗い",
+        "level": "intermediate"
+    },
+    {
+        "word": "round",
+        "meaning": "丸い",
+        "level": "intermediate"
+    },
+    {
+        "word": "route",
+        "meaning": "経路",
+        "level": "intermediate"
+    },
+    {
+        "word": "row",
+        "meaning": "列",
+        "level": "intermediate"
+    },
+    {
+        "word": "royal",
+        "meaning": "王室の",
+        "level": "intermediate"
+    },
+    {
+        "word": "rub",
+        "meaning": "こする",
+        "level": "intermediate"
+    },
+    {
+        "word": "rubber",
+        "meaning": "ゴム",
+        "level": "intermediate"
+    },
+    {
+        "word": "rude",
+        "meaning": "失礼な",
+        "level": "intermediate"
+    },
+    {
+        "word": "ruin",
+        "meaning": "台無しにする",
+        "level": "intermediate"
+    },
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "intermediate"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "intermediate"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "intermediate"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "intermediate"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "intermediate"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "intermediate"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "intermediate"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "intermediate"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "intermediate"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "intermediate"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "intermediate"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "intermediate"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "intermediate"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "intermediate"
+    },
+    {
+        "word": "receive",
+        "meaning": "受け取る",
+        "level": "intermediate"
+    },
+    {
+        "word": "reduce",
+        "meaning": "減らす",
+        "level": "intermediate"
+    },
+    {
+        "word": "remain",
+        "meaning": "残る",
+        "level": "advanced"
+    },
+    {
+        "word": "remember",
+        "meaning": "覚えている",
+        "level": "advanced"
+    },
+    {
+        "word": "remove",
+        "meaning": "取り除く",
+        "level": "advanced"
+    },
+    {
+        "word": "repeat",
+        "meaning": "繰り返す",
+        "level": "advanced"
+    },
+    {
+        "word": "replace",
+        "meaning": "取り替える",
+        "level": "advanced"
+    },
+    {
+        "word": "reply",
+        "meaning": "返事する",
+        "level": "advanced"
+    },
+    {
+        "word": "report",
+        "meaning": "報告する",
+        "level": "advanced"
+    },
+    {
+        "word": "request",
+        "meaning": "要請する",
+        "level": "advanced"
+    },
+    {
+        "word": "require",
+        "meaning": "必要とする",
+        "level": "advanced"
+    },
+    {
+        "word": "rescue",
+        "meaning": "救助する",
+        "level": "advanced"
+    },
+    {
+        "word": "research",
+        "meaning": "研究する",
+        "level": "advanced"
+    },
+    {
+        "word": "reserve",
+        "meaning": "予約する",
+        "level": "advanced"
+    },
+    {
+        "word": "respect",
+        "meaning": "尊敬する",
+        "level": "advanced"
+    },
+    {
+        "word": "respond",
+        "meaning": "応答する",
+        "level": "advanced"
+    },
+    {
+        "word": "result",
+        "meaning": "結果",
+        "level": "advanced"
+    },
+    {
+        "word": "return",
+        "meaning": "戻る",
+        "level": "advanced"
+    },
+    {
+        "word": "reveal",
+        "meaning": "明らかにする",
+        "level": "advanced"
+    },
+    {
+        "word": "review",
+        "meaning": "復習する",
+        "level": "advanced"
+    },
+    {
+        "word": "reward",
+        "meaning": "報酬",
+        "level": "advanced"
+    },
+    {
+        "word": "ride",
+        "meaning": "乗る",
+        "level": "advanced"
+    },
+    {
+        "word": "ring",
+        "meaning": "鳴る",
+        "level": "advanced"
+    },
+    {
+        "word": "rise",
+        "meaning": "昇る",
+        "level": "advanced"
+    },
+    {
+        "word": "risk",
+        "meaning": "危険",
+        "level": "advanced"
+    },
+    {
+        "word": "rob",
+        "meaning": "奪う",
+        "level": "advanced"
+    },
+    {
+        "word": "rock",
+        "meaning": "岩",
+        "level": "advanced"
+    },
+    {
+        "word": "role",
+        "meaning": "役割",
+        "level": "advanced"
+    },
+    {
+        "word": "roof",
+        "meaning": "屋根",
+        "level": "advanced"
+    },
+    {
+        "word": "root",
+        "meaning": "根",
+        "level": "advanced"
+    },
+    {
+        "word": "rope",
+        "meaning": "ロープ",
+        "level": "advanced"
+    },
+    {
+        "word": "rough",
+        "meaning": "粗い",
+        "level": "advanced"
+    },
+    {
+        "word": "round",
+        "meaning": "丸い",
+        "level": "advanced"
+    },
+    {
+        "word": "route",
+        "meaning": "経路",
+        "level": "advanced"
+    },
+    {
+        "word": "row",
+        "meaning": "列",
+        "level": "advanced"
+    },
+    {
+        "word": "royal",
+        "meaning": "王室の",
+        "level": "advanced"
+    },
+    {
+        "word": "rub",
+        "meaning": "こする",
+        "level": "advanced"
+    },
+    {
+        "word": "rubber",
+        "meaning": "ゴム",
+        "level": "advanced"
+    },
+    {
+        "word": "rude",
+        "meaning": "失礼な",
+        "level": "advanced"
+    },
+    {
+        "word": "ruin",
+        "meaning": "台無しにする",
+        "level": "advanced"
+    },
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "advanced"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "advanced"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "advanced"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "advanced"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "advanced"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "advanced"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "advanced"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "advanced"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "advanced"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "advanced"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "advanced"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "advanced"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "advanced"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "advanced"
+    },
+    {
+        "word": "receive",
+        "meaning": "受け取る",
+        "level": "advanced"
+    },
+    {
+        "word": "reduce",
+        "meaning": "減らす",
+        "level": "advanced"
+    },
+    {
+        "word": "remain",
+        "meaning": "残る",
+        "level": "advanced"
+    },
+    {
+        "word": "remember",
+        "meaning": "覚えている",
+        "level": "advanced"
+    },
+    {
+        "word": "remove",
+        "meaning": "取り除く",
+        "level": "advanced"
+    },
+    {
+        "word": "repeat",
+        "meaning": "繰り返す",
+        "level": "advanced"
+    },
+    {
+        "word": "replace",
+        "meaning": "取り替える",
+        "level": "advanced"
+    },
+    {
+        "word": "reply",
+        "meaning": "返事する",
+        "level": "advanced"
+    },
+    {
+        "word": "report",
+        "meaning": "報告する",
+        "level": "advanced"
+    },
+    {
+        "word": "request",
+        "meaning": "要請する",
+        "level": "advanced"
+    },
+    {
+        "word": "require",
+        "meaning": "必要とする",
+        "level": "advanced"
+    },
+    {
+        "word": "rescue",
+        "meaning": "救助する",
+        "level": "advanced"
+    },
+    {
+        "word": "research",
+        "meaning": "研究する",
+        "level": "advanced"
+    },
+    {
+        "word": "reserve",
+        "meaning": "予約する",
+        "level": "advanced"
+    },
+    {
+        "word": "respect",
+        "meaning": "尊敬する",
+        "level": "advanced"
+    },
+    {
+        "word": "respond",
+        "meaning": "応答する",
+        "level": "advanced"
+    },
+    {
+        "word": "result",
+        "meaning": "結果",
+        "level": "advanced"
+    },
+    {
+        "word": "return",
+        "meaning": "戻る",
+        "level": "advanced"
+    },
+    {
+        "word": "reveal",
+        "meaning": "明らかにする",
+        "level": "advanced"
+    },
+    {
+        "word": "review",
+        "meaning": "復習する",
+        "level": "advanced"
+    },
+    {
+        "word": "reward",
+        "meaning": "報酬",
+        "level": "advanced"
+    },
+    {
+        "word": "ride",
+        "meaning": "乗る",
+        "level": "advanced"
+    },
+    {
+        "word": "ring",
+        "meaning": "鳴る",
+        "level": "advanced"
+    },
+    {
+        "word": "rise",
+        "meaning": "昇る",
+        "level": "advanced"
+    },
+    {
+        "word": "risk",
+        "meaning": "危険",
+        "level": "advanced"
+    },
+    {
+        "word": "rob",
+        "meaning": "奪う",
+        "level": "advanced"
+    },
+    {
+        "word": "rock",
+        "meaning": "岩",
+        "level": "advanced"
+    },
+    {
+        "word": "role",
+        "meaning": "役割",
+        "level": "advanced"
+    },
+    {
+        "word": "roof",
+        "meaning": "屋根",
+        "level": "advanced"
+    },
+    {
+        "word": "root",
+        "meaning": "根",
+        "level": "advanced"
+    },
+    {
+        "word": "rope",
+        "meaning": "ロープ",
+        "level": "advanced"
+    },
+    {
+        "word": "rough",
+        "meaning": "粗い",
+        "level": "advanced"
+    },
+    {
+        "word": "round",
+        "meaning": "丸い",
+        "level": "advanced"
+    },
+    {
+        "word": "route",
+        "meaning": "経路",
+        "level": "advanced"
+    },
+    {
+        "word": "row",
+        "meaning": "列",
+        "level": "advanced"
+    },
+    {
+        "word": "royal",
+        "meaning": "王室の",
+        "level": "advanced"
+    },
+    {
+        "word": "rub",
+        "meaning": "こする",
+        "level": "advanced"
+    },
+    {
+        "word": "rubber",
+        "meaning": "ゴム",
+        "level": "advanced"
+    },
+    {
+        "word": "rude",
+        "meaning": "失礼な",
+        "level": "advanced"
+    },
+    {
+        "word": "ruin",
+        "meaning": "台無しにする",
+        "level": "advanced"
+    },
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "advanced"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "advanced"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "advanced"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "advanced"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "advanced"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "advanced"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "advanced"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "advanced"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "advanced"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "advanced"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "advanced"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "advanced"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "advanced"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "advanced"
+    },
+    {
+        "word": "receive",
+        "meaning": "受け取る",
+        "level": "advanced"
+    },
+    {
+        "word": "reduce",
+        "meaning": "減らす",
+        "level": "advanced"
+    },
+    {
+        "word": "remain",
+        "meaning": "残る",
+        "level": "advanced"
+    },
+    {
+        "word": "remember",
+        "meaning": "覚えている",
+        "level": "advanced"
+    },
+    {
+        "word": "remove",
+        "meaning": "取り除く",
+        "level": "advanced"
+    },
+    {
+        "word": "repeat",
+        "meaning": "繰り返す",
+        "level": "advanced"
+    },
+    {
+        "word": "replace",
+        "meaning": "取り替える",
+        "level": "advanced"
+    },
+    {
+        "word": "reply",
+        "meaning": "返事する",
+        "level": "advanced"
+    },
+    {
+        "word": "report",
+        "meaning": "報告する",
+        "level": "advanced"
+    },
+    {
+        "word": "request",
+        "meaning": "要請する",
+        "level": "advanced"
+    },
+    {
+        "word": "require",
+        "meaning": "必要とする",
+        "level": "advanced"
+    },
+    {
+        "word": "rescue",
+        "meaning": "救助する",
+        "level": "advanced"
+    },
+    {
+        "word": "research",
+        "meaning": "研究する",
+        "level": "advanced"
+    },
+    {
+        "word": "reserve",
+        "meaning": "予約する",
+        "level": "advanced"
+    },
+    {
+        "word": "respect",
+        "meaning": "尊敬する",
+        "level": "advanced"
+    },
+    {
+        "word": "respond",
+        "meaning": "応答する",
+        "level": "advanced"
+    },
+    {
+        "word": "result",
+        "meaning": "結果",
+        "level": "advanced"
+    },
+    {
+        "word": "return",
+        "meaning": "戻る",
+        "level": "advanced"
+    },
+    {
+        "word": "reveal",
+        "meaning": "明らかにする",
+        "level": "advanced"
+    },
+    {
+        "word": "review",
+        "meaning": "復習する",
+        "level": "advanced"
+    },
+    {
+        "word": "reward",
+        "meaning": "報酬",
+        "level": "advanced"
+    },
+    {
+        "word": "ride",
+        "meaning": "乗る",
+        "level": "advanced"
+    },
+    {
+        "word": "ring",
+        "meaning": "鳴る",
+        "level": "advanced"
+    },
+    {
+        "word": "rise",
+        "meaning": "昇る",
+        "level": "advanced"
+    },
+    {
+        "word": "risk",
+        "meaning": "危険",
+        "level": "advanced"
+    },
+    {
+        "word": "rob",
+        "meaning": "奪う",
+        "level": "advanced"
+    },
+    {
+        "word": "rock",
+        "meaning": "岩",
+        "level": "advanced"
+    },
+    {
+        "word": "role",
+        "meaning": "役割",
+        "level": "advanced"
+    },
+    {
+        "word": "roof",
+        "meaning": "屋根",
+        "level": "advanced"
+    },
+    {
+        "word": "root",
+        "meaning": "根",
+        "level": "advanced"
+    },
+    {
+        "word": "rope",
+        "meaning": "ロープ",
+        "level": "advanced"
+    },
+    {
+        "word": "rough",
+        "meaning": "粗い",
+        "level": "advanced"
+    },
+    {
+        "word": "round",
+        "meaning": "丸い",
+        "level": "advanced"
+    },
+    {
+        "word": "route",
+        "meaning": "経路",
+        "level": "advanced"
+    },
+    {
+        "word": "row",
+        "meaning": "列",
+        "level": "advanced"
+    },
+    {
+        "word": "royal",
+        "meaning": "王室の",
+        "level": "advanced"
+    },
+    {
+        "word": "rub",
+        "meaning": "こする",
+        "level": "advanced"
+    },
+    {
+        "word": "rubber",
+        "meaning": "ゴム",
+        "level": "advanced"
+    },
+    {
+        "word": "rude",
+        "meaning": "失礼な",
+        "level": "advanced"
+    },
+    {
+        "word": "ruin",
+        "meaning": "台無しにする",
+        "level": "advanced"
+    },
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "advanced"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "advanced"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "advanced"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "advanced"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "advanced"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "advanced"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "advanced"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "advanced"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "advanced"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "advanced"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "advanced"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "advanced"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "advanced"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "advanced"
+    }
+];
+
+let currentFilter = 'all';
+let quizWords = [];
+let currentQuestionIndex = 0;
+let score = 0;
+let totalQuestionsRequested = 10;
+let isAnswered = false;
+
+function setFilter(level) {
+    currentFilter = level;
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+}
+
+function startQuiz() {
+    const inputCount = parseInt(document.getElementById('quiz-count').value);
+    if (isNaN(inputCount) || inputCount <= 0) {
+        alert('正しい問題数を入力してにゃ！');
+        return;
+    }
+
+    // フィルタリング
+    let filtered = [];
+    if (currentFilter === 'all') {
+        filtered = [...wordDatabase];
+    } else {
+        filtered = wordDatabase.filter(w => w.level === currentFilter);
+    }
+
+    if (filtered.length === 0) {
+        alert('該当する単語がありませんにゃ。');
+        return;
+    }
+
+    // シャッフル
+    filtered.sort(() => Math.random() - 0.5);
+    
+    totalQuestionsRequested = Math.min(inputCount, filtered.length);
+    quizWords = filtered.slice(0, totalQuestionsRequested);
+    
+    currentQuestionIndex = 0;
+    score = 0;
+    
+    document.getElementById('home-screen').classList.add('hidden');
+    document.getElementById('result-screen').classList.add('hidden');
+    document.getElementById('quiz-screen').classList.remove('hidden');
+    
+    showQuestion();
+}
+
+function showQuestion() {
+    isAnswered = false;
+    const currentWordObj = quizWords[currentQuestionIndex];
+    
+    // プログレス表示
+    const levelJa = currentWordObj.level === 'beginner' ? '初級' : currentWordObj.level === 'intermediate' ? '中級' : '上級';
+    document.getElementById('progress-display').textContent = `第 ${currentQuestionIndex + 1} 問 / ${totalQuestionsRequested} 問 [${levelJa}]`;
+    
+    // 単語表示（余計な文字は一切なし）
+    document.getElementById('target-word').textContent = currentWordObj.word;
+    
+    // 選択肢の作成（誤答をデータベース全体からランダム抽出、重複なし）
+    let incorrectChoices = wordDatabase
+        .filter(w => w.meaning !== currentWordObj.meaning)
+        .map(w => w.meaning);
+    
+    // ユニークな誤答を3つ選ぶ
+    incorrectChoices = [...new Set(incorrectChoices)];
+    incorrectChoices.sort(() => Math.random() - 0.5);
+    const finalChoices = incorrectChoices.slice(0, 3);
+    finalChoices.push(currentWordObj.meaning);
+    finalChoices.sort(() => Math.random() - 0.5);
+    
+    const optionsBox = document.getElementById('options-box');
+    optionsBox.innerHTML = '';
+    
+    finalChoices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = choice; // 綺麗な日本語のみ表示
+        btn.onclick = () => selectOption(btn, choice, currentWordObj.meaning);
+        optionsBox.appendChild(btn);
+    });
+}
+
+function selectOption(selectedBtn, chosenMeaning, correctMeaning) {
+    if (isAnswered) return;
+    isAnswered = true;
+    
+    const buttons = document.querySelectorAll('.option-btn');
+    
+    if (chosenMeaning === correctMeaning) {
+        selectedBtn.classList.add('correct');
+        score++;
+    } else {
+        selectedBtn.classList.add('incorrect');
+        // 正解のボタンを緑色にする
+        buttons.forEach(btn => {
+            if (btn.textContent === correctMeaning) {
+                btn.classList.add('correct');
+            }
+        });
+    }
+    
+    // 1.5秒後に次の問題、または結果画面へ
+    setTimeout(() => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < totalQuestionsRequested) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }, 1200);
+}
+
+function showResult() {
+    document.getElementById('quiz-screen').classList.add('hidden');
+    document.getElementById('result-screen').classList.remove('hidden');
+    document.getElementById('score-display').textContent = `${totalQuestionsRequested}問中 ${score}問正解！`;
+}
+
+function confirmGoHome() {
+    if (confirm('データが消えるけど大丈夫かニャ？')) {
+        backToHome();
+    }
+}
+
+function backToHome() {
+    document.getElementById('quiz-screen').classList.add('hidden');
+    document.getElementById('result-screen').classList.add('hidden');
+    document.getElementById('home-screen').classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>

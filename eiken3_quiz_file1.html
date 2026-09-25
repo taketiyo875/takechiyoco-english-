@@ -1,0 +1,2861 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英検3級 単語クイズ File 1</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #FFF5EE;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #ffffff;
+            border: 3px solid #FFA500;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(255, 165, 0, 0.15);
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+        }
+        h1 {
+            color: #FF7F50;
+            font-size: 28px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .deco-cat {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            color: #A0522D;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        .word-display {
+            color: #FF7F50;
+            font-size: 36px;
+            font-weight: bold;
+            margin: 30px 0;
+            word-wrap: break-word;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .option-btn {
+            background-color: #FFA500;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+        .option-btn.correct {
+            background-color: #2ECC71 !important;
+        }
+        .option-btn.incorrect {
+            background-color: #E74C3C !important;
+        }
+        .nav-btn {
+            background-color: #90A4AE;
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .nav-btn:hover {
+            background-color: #78909C;
+        }
+        .filter-section {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background-color: #ffffff;
+            color: #FFA500;
+            border: 2px solid #FFA500;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn.active {
+            background-color: #FFA500;
+            color: #ffffff;
+        }
+        .input-section {
+            margin: 25px 0;
+        }
+        .input-label {
+            color: #A0522D;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .count-input {
+            border: 2px solid #FFA500;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 16px;
+            width: 100px;
+            text-align: center;
+            color: #A0522D;
+            font-weight: bold;
+        }
+        .start-btn {
+            background-color: #FF7F50;
+            color: #ffffff;
+            border: none;
+            border-radius: 15px;
+            padding: 15px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 127, 80, 0.3);
+            transition: all 0.2s;
+            margin-top: 15px;
+        }
+        .start-btn:hover {
+            background-color: #FF6347;
+            transform: translateY(-2px);
+        }
+        .hidden {
+            display: none !important;
+        }
+        .result-score {
+            font-size: 24px;
+            color: #A0522D;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- ホーム画面 -->
+    <div id="home-screen">
+        <h1>英検3級 単語クイズ File 1</h1>
+        <div class="deco-cat">🐾 🐱 🐾</div>
+        
+        <p class="subtitle">挑戦するレベルと問題数を指定してスタートにゃ！</p>
+        
+        <div class="filter-section">
+            <button class="filter-btn active" onclick="setFilter('all')">全レベル</button>
+            <button class="filter-btn" onclick="setFilter('beginner')">初級</button>
+            <button class="filter-btn" onclick="setFilter('intermediate')">中級</button>
+            <button class="filter-btn" onclick="setFilter('advanced')">上級</button>
+        </div>
+        
+        <div class="input-section">
+            <label class="input-label" for="quiz-count">挑戦する問題数：</label>
+            <input type="number" id="quiz-count" class="count-input" value="10" min="1" max="500">
+        </div>
+        
+        <button class="start-btn" onclick="startQuiz()">クイズを始める 🐾</button>
+    </div>
+
+    <!-- クイズ画面 -->
+    <div id="quiz-screen" class="hidden">
+        <h1>英検3級 単語クイズ File 1</h1>
+        <div class="deco-cat">🐾 🐱 🐾</div>
+        
+        <div class="subtitle" id="progress-display">第 1 問 / 10 問 [初級]</div>
+        
+        <div class="word-display" id="target-word">loading...</div>
+        
+        <div class="options-container" id="options-box">
+            <!-- 4択ボタンが動的に生成されます -->
+        </div>
+        
+        <button class="nav-btn" onclick="confirmGoHome()">ホームに戻る 🐱</button>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="result-screen" class="hidden">
+        <h1>クイズ結果 🐾</h1>
+        <div class="deco-cat">🎉 🐱 🎉</div>
+        
+        <div class="result-score" id="score-display">10問中 8問正解！</div>
+        
+        <button class="start-btn" onclick="backToHome()">もう一度あそぶ</button>
+    </div>
+</div>
+
+<script>
+// 完全に重複なく分類された500単語のデータベース（連番やシステム用文字は一切排除）
+const wordDatabase = [
+    {
+        "word": "apple",
+        "meaning": "りんご",
+        "level": "beginner"
+    },
+    {
+        "word": "school",
+        "meaning": "学校",
+        "level": "beginner"
+    },
+    {
+        "word": "family",
+        "meaning": "家族",
+        "level": "beginner"
+    },
+    {
+        "word": "book",
+        "meaning": "本",
+        "level": "beginner"
+    },
+    {
+        "word": "desk",
+        "meaning": "机",
+        "level": "beginner"
+    },
+    {
+        "word": "chair",
+        "meaning": "椅子",
+        "level": "beginner"
+    },
+    {
+        "word": "teacher",
+        "meaning": "先生",
+        "level": "beginner"
+    },
+    {
+        "word": "student",
+        "meaning": "生徒",
+        "level": "beginner"
+    },
+    {
+        "word": "friend",
+        "meaning": "友達",
+        "level": "beginner"
+    },
+    {
+        "word": "house",
+        "meaning": "家",
+        "level": "beginner"
+    },
+    {
+        "word": "room",
+        "meaning": "部屋",
+        "level": "beginner"
+    },
+    {
+        "word": "door",
+        "meaning": "ドア",
+        "level": "beginner"
+    },
+    {
+        "word": "window",
+        "meaning": "窓",
+        "level": "beginner"
+    },
+    {
+        "word": "car",
+        "meaning": "車",
+        "level": "beginner"
+    },
+    {
+        "word": "train",
+        "meaning": "電車",
+        "level": "beginner"
+    },
+    {
+        "word": "station",
+        "meaning": "駅",
+        "level": "beginner"
+    },
+    {
+        "word": "bus",
+        "meaning": "バス",
+        "level": "beginner"
+    },
+    {
+        "word": "bicycle",
+        "meaning": "自転車",
+        "level": "beginner"
+    },
+    {
+        "word": "airplane",
+        "meaning": "飛行機",
+        "level": "beginner"
+    },
+    {
+        "word": "ship",
+        "meaning": "船",
+        "level": "beginner"
+    },
+    {
+        "word": "bag",
+        "meaning": "かばん",
+        "level": "beginner"
+    },
+    {
+        "word": "clock",
+        "meaning": "時計",
+        "level": "beginner"
+    },
+    {
+        "word": "watch",
+        "meaning": "腕時計",
+        "level": "beginner"
+    },
+    {
+        "word": "pen",
+        "meaning": "ペン",
+        "level": "beginner"
+    },
+    {
+        "word": "pencil",
+        "meaning": "鉛筆",
+        "level": "beginner"
+    },
+    {
+        "word": "notebook",
+        "meaning": "ノート",
+        "level": "beginner"
+    },
+    {
+        "word": "paper",
+        "meaning": "紙",
+        "level": "beginner"
+    },
+    {
+        "word": "cat",
+        "meaning": "猫",
+        "level": "beginner"
+    },
+    {
+        "word": "dog",
+        "meaning": "犬",
+        "level": "beginner"
+    },
+    {
+        "word": "bird",
+        "meaning": "鳥",
+        "level": "beginner"
+    },
+    {
+        "word": "fish",
+        "meaning": "魚",
+        "level": "beginner"
+    },
+    {
+        "word": "animal",
+        "meaning": "動物",
+        "level": "beginner"
+    },
+    {
+        "word": "flower",
+        "meaning": "花",
+        "level": "beginner"
+    },
+    {
+        "word": "tree",
+        "meaning": "木",
+        "level": "beginner"
+    },
+    {
+        "word": "river",
+        "meaning": "川",
+        "level": "beginner"
+    },
+    {
+        "word": "mountain",
+        "meaning": "山",
+        "level": "beginner"
+    },
+    {
+        "word": "sea",
+        "meaning": "海",
+        "level": "beginner"
+    },
+    {
+        "word": "sky",
+        "meaning": "空",
+        "level": "beginner"
+    },
+    {
+        "word": "sun",
+        "meaning": "太陽",
+        "level": "beginner"
+    },
+    {
+        "word": "moon",
+        "meaning": "月",
+        "level": "beginner"
+    },
+    {
+        "word": "star",
+        "meaning": "星",
+        "level": "beginner"
+    },
+    {
+        "word": "rain",
+        "meaning": "雨",
+        "level": "beginner"
+    },
+    {
+        "word": "snow",
+        "meaning": "雪",
+        "level": "beginner"
+    },
+    {
+        "word": "wind",
+        "meaning": "風",
+        "level": "beginner"
+    },
+    {
+        "word": "weather",
+        "meaning": "天気",
+        "level": "beginner"
+    },
+    {
+        "word": "summer",
+        "meaning": "夏",
+        "level": "beginner"
+    },
+    {
+        "word": "winter",
+        "meaning": "冬",
+        "level": "beginner"
+    },
+    {
+        "word": "spring",
+        "meaning": "春",
+        "level": "beginner"
+    },
+    {
+        "word": "autumn",
+        "meaning": "秋",
+        "level": "beginner"
+    },
+    {
+        "word": "morning",
+        "meaning": "朝",
+        "level": "beginner"
+    },
+    {
+        "word": "afternoon",
+        "meaning": "午後",
+        "level": "beginner"
+    },
+    {
+        "word": "evening",
+        "meaning": "夕方",
+        "level": "beginner"
+    },
+    {
+        "word": "night",
+        "meaning": "夜",
+        "level": "beginner"
+    },
+    {
+        "word": "today",
+        "meaning": "今日",
+        "level": "beginner"
+    },
+    {
+        "word": "tomorrow",
+        "meaning": "明日",
+        "level": "beginner"
+    },
+    {
+        "word": "yesterday",
+        "meaning": "昨日",
+        "level": "beginner"
+    },
+    {
+        "word": "week",
+        "meaning": "週",
+        "level": "beginner"
+    },
+    {
+        "word": "month",
+        "meaning": "月（期間）",
+        "level": "beginner"
+    },
+    {
+        "word": "year",
+        "meaning": "年",
+        "level": "beginner"
+    },
+    {
+        "word": "time",
+        "meaning": "時間",
+        "level": "beginner"
+    },
+    {
+        "word": "water",
+        "meaning": "水",
+        "level": "beginner"
+    },
+    {
+        "word": "milk",
+        "meaning": "牛乳",
+        "level": "beginner"
+    },
+    {
+        "word": "tea",
+        "meaning": "茶",
+        "level": "beginner"
+    },
+    {
+        "word": "coffee",
+        "meaning": "コーヒー",
+        "level": "beginner"
+    },
+    {
+        "word": "juice",
+        "meaning": "ジュース",
+        "level": "beginner"
+    },
+    {
+        "word": "rice",
+        "meaning": "米、ご飯",
+        "level": "beginner"
+    },
+    {
+        "word": "bread",
+        "meaning": "パン",
+        "level": "beginner"
+    },
+    {
+        "word": "meat",
+        "meaning": "肉",
+        "level": "beginner"
+    },
+    {
+        "word": "egg",
+        "meaning": "卵",
+        "level": "beginner"
+    },
+    {
+        "word": "banana",
+        "meaning": "バナナ",
+        "level": "beginner"
+    },
+    {
+        "word": "orange",
+        "meaning": "オレンジ",
+        "level": "beginner"
+    },
+    {
+        "word": "cake",
+        "meaning": "ケーキ",
+        "level": "beginner"
+    },
+    {
+        "word": "food",
+        "meaning": "食べ物",
+        "level": "beginner"
+    },
+    {
+        "word": "breakfast",
+        "meaning": "朝食",
+        "level": "beginner"
+    },
+    {
+        "word": "lunch",
+        "meaning": "昼食",
+        "level": "beginner"
+    },
+    {
+        "word": "dinner",
+        "meaning": "夕食",
+        "level": "beginner"
+    },
+    {
+        "word": "cup",
+        "meaning": "カップ",
+        "level": "beginner"
+    },
+    {
+        "word": "plate",
+        "meaning": "皿",
+        "level": "beginner"
+    },
+    {
+        "word": "knife",
+        "meaning": "ナイフ",
+        "level": "beginner"
+    },
+    {
+        "word": "fork",
+        "meaning": "フォーク",
+        "level": "beginner"
+    },
+    {
+        "word": "spoon",
+        "meaning": "スプーン",
+        "level": "beginner"
+    },
+    {
+        "word": "hand",
+        "meaning": "手",
+        "level": "beginner"
+    },
+    {
+        "word": "foot",
+        "meaning": "足",
+        "level": "beginner"
+    },
+    {
+        "word": "leg",
+        "meaning": "脚",
+        "level": "beginner"
+    },
+    {
+        "word": "arm",
+        "meaning": "腕",
+        "level": "beginner"
+    },
+    {
+        "word": "head",
+        "meaning": "頭",
+        "level": "beginner"
+    },
+    {
+        "word": "hair",
+        "meaning": "髪の毛",
+        "level": "beginner"
+    },
+    {
+        "word": "face",
+        "meaning": "顔",
+        "level": "beginner"
+    },
+    {
+        "word": "eye",
+        "meaning": "目",
+        "level": "beginner"
+    },
+    {
+        "word": "ear",
+        "meaning": "耳",
+        "level": "beginner"
+    },
+    {
+        "word": "nose",
+        "meaning": "鼻",
+        "level": "beginner"
+    },
+    {
+        "word": "mouth",
+        "meaning": "口",
+        "level": "beginner"
+    },
+    {
+        "word": "tooth",
+        "meaning": "歯",
+        "level": "beginner"
+    },
+    {
+        "word": "body",
+        "meaning": "体",
+        "level": "beginner"
+    },
+    {
+        "word": "doctor",
+        "meaning": "医者",
+        "level": "beginner"
+    },
+    {
+        "word": "nurse",
+        "meaning": "看護師",
+        "level": "beginner"
+    },
+    {
+        "word": "police officer",
+        "meaning": "警察官",
+        "level": "beginner"
+    },
+    {
+        "word": "driver",
+        "meaning": "運転手",
+        "level": "beginner"
+    },
+    {
+        "word": "singer",
+        "meaning": "歌手",
+        "level": "beginner"
+    },
+    {
+        "word": "job",
+        "meaning": "仕事",
+        "level": "beginner"
+    },
+    {
+        "word": "work",
+        "meaning": "働く",
+        "level": "beginner"
+    },
+    {
+        "word": "play",
+        "meaning": "遊ぶ",
+        "level": "beginner"
+    },
+    {
+        "word": "study",
+        "meaning": "勉強する",
+        "level": "beginner"
+    },
+    {
+        "word": "learn",
+        "meaning": "学ぶ",
+        "level": "beginner"
+    },
+    {
+        "word": "teach",
+        "meaning": "教える",
+        "level": "beginner"
+    },
+    {
+        "word": "read",
+        "meaning": "読む",
+        "level": "beginner"
+    },
+    {
+        "word": "write",
+        "meaning": "書く",
+        "level": "beginner"
+    },
+    {
+        "word": "listen",
+        "meaning": "聞く",
+        "level": "beginner"
+    },
+    {
+        "word": "speak",
+        "meaning": "話す",
+        "level": "beginner"
+    },
+    {
+        "word": "talk",
+        "meaning": "話す",
+        "level": "beginner"
+    },
+    {
+        "word": "sing",
+        "meaning": "歌う",
+        "level": "beginner"
+    },
+    {
+        "word": "dance",
+        "meaning": "踊る",
+        "level": "beginner"
+    },
+    {
+        "word": "run",
+        "meaning": "走る",
+        "level": "beginner"
+    },
+    {
+        "word": "walk",
+        "meaning": "歩く",
+        "level": "beginner"
+    },
+    {
+        "word": "swim",
+        "meaning": "泳ぐ",
+        "level": "beginner"
+    },
+    {
+        "word": "go",
+        "meaning": "行く",
+        "level": "beginner"
+    },
+    {
+        "word": "come",
+        "meaning": "来る",
+        "level": "beginner"
+    },
+    {
+        "word": "see",
+        "meaning": "見る",
+        "level": "beginner"
+    },
+    {
+        "word": "look",
+        "meaning": "見る",
+        "level": "beginner"
+    },
+    {
+        "word": "find",
+        "meaning": "見つける",
+        "level": "beginner"
+    },
+    {
+        "word": "lose",
+        "meaning": "失う",
+        "level": "beginner"
+    },
+    {
+        "word": "buy",
+        "meaning": "買う",
+        "level": "beginner"
+    },
+    {
+        "word": "sell",
+        "meaning": "売る",
+        "level": "beginner"
+    },
+    {
+        "word": "shop",
+        "meaning": "買い物する",
+        "level": "beginner"
+    },
+    {
+        "word": "open",
+        "meaning": "開ける",
+        "level": "beginner"
+    },
+    {
+        "word": "close",
+        "meaning": "閉める",
+        "level": "beginner"
+    },
+    {
+        "word": "start",
+        "meaning": "始める",
+        "level": "beginner"
+    },
+    {
+        "word": "stop",
+        "meaning": "止める",
+        "level": "beginner"
+    },
+    {
+        "word": "wash",
+        "meaning": "洗う",
+        "level": "beginner"
+    },
+    {
+        "word": "eat",
+        "meaning": "食べる",
+        "level": "beginner"
+    },
+    {
+        "word": "drink",
+        "meaning": "飲む",
+        "level": "beginner"
+    },
+    {
+        "word": "sleep",
+        "meaning": "眠る",
+        "level": "beginner"
+    },
+    {
+        "word": "sit",
+        "meaning": "座る",
+        "level": "beginner"
+    },
+    {
+        "word": "stand",
+        "meaning": "立つ",
+        "level": "beginner"
+    },
+    {
+        "word": "happy",
+        "meaning": "幸せな",
+        "level": "beginner"
+    },
+    {
+        "word": "sad",
+        "meaning": "悲しい",
+        "level": "beginner"
+    },
+    {
+        "word": "angry",
+        "meaning": "怒った",
+        "level": "beginner"
+    },
+    {
+        "word": "tired",
+        "meaning": "疲れた",
+        "level": "beginner"
+    },
+    {
+        "word": "hungry",
+        "meaning": "空腹な",
+        "level": "beginner"
+    },
+    {
+        "word": "good",
+        "meaning": "良い",
+        "level": "beginner"
+    },
+    {
+        "word": "bad",
+        "meaning": "悪い",
+        "level": "beginner"
+    },
+    {
+        "word": "beautiful",
+        "meaning": "美しい",
+        "level": "beginner"
+    },
+    {
+        "word": "cute",
+        "meaning": "可愛い",
+        "level": "beginner"
+    },
+    {
+        "word": "big",
+        "meaning": "大きい",
+        "level": "beginner"
+    },
+    {
+        "word": "small",
+        "meaning": "小さい",
+        "level": "beginner"
+    },
+    {
+        "word": "tall",
+        "meaning": "背が高い",
+        "level": "beginner"
+    },
+    {
+        "word": "short",
+        "meaning": "短い",
+        "level": "beginner"
+    },
+    {
+        "word": "long",
+        "meaning": "長い",
+        "level": "beginner"
+    },
+    {
+        "word": "new",
+        "meaning": "新しい",
+        "level": "beginner"
+    },
+    {
+        "word": "old",
+        "meaning": "古い",
+        "level": "beginner"
+    },
+    {
+        "word": "young",
+        "meaning": "若い",
+        "level": "beginner"
+    },
+    {
+        "word": "hot",
+        "meaning": "暑い",
+        "level": "beginner"
+    },
+    {
+        "word": "cold",
+        "meaning": "寒い",
+        "level": "beginner"
+    },
+    {
+        "word": "warm",
+        "meaning": "暖かい",
+        "level": "beginner"
+    },
+    {
+        "word": "cool",
+        "meaning": "涼しい",
+        "level": "beginner"
+    },
+    {
+        "word": "clean",
+        "meaning": "きれいな",
+        "level": "beginner"
+    },
+    {
+        "word": "dirty",
+        "meaning": "汚れた",
+        "level": "beginner"
+    },
+    {
+        "word": "fast",
+        "meaning": "速い",
+        "level": "beginner"
+    },
+    {
+        "word": "slow",
+        "meaning": "遅い",
+        "level": "beginner"
+    },
+    {
+        "word": "rich",
+        "meaning": "豊かな",
+        "level": "beginner"
+    },
+    {
+        "word": "poor",
+        "meaning": "貧しい",
+        "level": "beginner"
+    },
+    {
+        "word": "strong",
+        "meaning": "強い",
+        "level": "beginner"
+    },
+    {
+        "word": "weak",
+        "meaning": "弱い",
+        "level": "beginner"
+    },
+    {
+        "word": "busy",
+        "meaning": "忙しい",
+        "level": "beginner"
+    },
+    {
+        "word": "free",
+        "meaning": "自由な、暇な",
+        "level": "beginner"
+    },
+    {
+        "word": "easy",
+        "meaning": "簡単な",
+        "level": "beginner"
+    },
+    {
+        "word": "hard",
+        "meaning": "難しい、硬い",
+        "level": "beginner"
+    },
+    {
+        "word": "large",
+        "meaning": "大きい",
+        "level": "beginner"
+    },
+    {
+        "word": "dark",
+        "meaning": "暗い",
+        "level": "beginner"
+    },
+    {
+        "word": "light",
+        "meaning": "明るい、軽い",
+        "level": "beginner"
+    },
+    {
+        "word": "sweet",
+        "meaning": "甘い",
+        "level": "intermediate"
+    },
+    {
+        "word": "bitter",
+        "meaning": "苦い",
+        "level": "intermediate"
+    },
+    {
+        "word": "salty",
+        "meaning": "塩辛い",
+        "level": "intermediate"
+    },
+    {
+        "word": "sour",
+        "meaning": "酸っぱい",
+        "level": "intermediate"
+    },
+    {
+        "word": "arrive",
+        "meaning": "到着する",
+        "level": "intermediate"
+    },
+    {
+        "word": "government",
+        "meaning": "政府",
+        "level": "intermediate"
+    },
+    {
+        "word": "environment",
+        "meaning": "環境",
+        "level": "intermediate"
+    },
+    {
+        "word": "accept",
+        "meaning": "受け入れる",
+        "level": "intermediate"
+    },
+    {
+        "word": "advice",
+        "meaning": "助言",
+        "level": "intermediate"
+    },
+    {
+        "word": "agree",
+        "meaning": "同意する",
+        "level": "intermediate"
+    },
+    {
+        "word": "allow",
+        "meaning": "許可する",
+        "level": "intermediate"
+    },
+    {
+        "word": "amount",
+        "meaning": "量",
+        "level": "intermediate"
+    },
+    {
+        "word": "appear",
+        "meaning": "現れる",
+        "level": "intermediate"
+    },
+    {
+        "word": "argue",
+        "meaning": "主張する",
+        "level": "intermediate"
+    },
+    {
+        "word": "arrange",
+        "meaning": "手配する",
+        "level": "intermediate"
+    },
+    {
+        "word": "article",
+        "meaning": "記事",
+        "level": "intermediate"
+    },
+    {
+        "word": "artist",
+        "meaning": "芸術家",
+        "level": "intermediate"
+    },
+    {
+        "word": "attack",
+        "meaning": "攻撃する",
+        "level": "intermediate"
+    },
+    {
+        "word": "attend",
+        "meaning": "出席する",
+        "level": "intermediate"
+    },
+    {
+        "word": "attitude",
+        "meaning": "態度",
+        "level": "intermediate"
+    },
+    {
+        "word": "attract",
+        "meaning": "引きつける",
+        "level": "intermediate"
+    },
+    {
+        "word": "audience",
+        "meaning": "聴衆",
+        "level": "intermediate"
+    },
+    {
+        "word": "author",
+        "meaning": "著者",
+        "level": "intermediate"
+    },
+    {
+        "word": "average",
+        "meaning": "平均",
+        "level": "intermediate"
+    },
+    {
+        "word": "avoid",
+        "meaning": "避ける",
+        "level": "intermediate"
+    },
+    {
+        "word": "award",
+        "meaning": "賞",
+        "level": "intermediate"
+    },
+    {
+        "word": "balance",
+        "meaning": "バランス",
+        "level": "intermediate"
+    },
+    {
+        "word": "behavior",
+        "meaning": "行動",
+        "level": "intermediate"
+    },
+    {
+        "word": "belong",
+        "meaning": "属する",
+        "level": "intermediate"
+    },
+    {
+        "word": "benefit",
+        "meaning": "利益",
+        "level": "intermediate"
+    },
+    {
+        "word": "bill",
+        "meaning": "請求書",
+        "level": "intermediate"
+    },
+    {
+        "word": "blame",
+        "meaning": "責める",
+        "level": "intermediate"
+    },
+    {
+        "word": "borrow",
+        "meaning": "借りる",
+        "level": "intermediate"
+    },
+    {
+        "word": "bother",
+        "meaning": "悩ませる",
+        "level": "intermediate"
+    },
+    {
+        "word": "brain",
+        "meaning": "脳",
+        "level": "intermediate"
+    },
+    {
+        "word": "brave",
+        "meaning": "勇敢な",
+        "level": "intermediate"
+    },
+    {
+        "word": "breathe",
+        "meaning": "呼吸する",
+        "level": "intermediate"
+    },
+    {
+        "word": "bright",
+        "meaning": "輝かしい",
+        "level": "intermediate"
+    },
+    {
+        "word": "business",
+        "meaning": "ビジネス",
+        "level": "intermediate"
+    },
+    {
+        "word": "calm",
+        "meaning": "冷静な",
+        "level": "intermediate"
+    },
+    {
+        "word": "camera",
+        "meaning": "カメラ",
+        "level": "intermediate"
+    },
+    {
+        "word": "campaign",
+        "meaning": "キャンペーン",
+        "level": "intermediate"
+    },
+    {
+        "word": "candidate",
+        "meaning": "候補者",
+        "level": "intermediate"
+    },
+    {
+        "word": "capital",
+        "meaning": "首都、資本",
+        "level": "intermediate"
+    },
+    {
+        "word": "career",
+        "meaning": "経歴",
+        "level": "intermediate"
+    },
+    {
+        "word": "careful",
+        "meaning": "注意深い",
+        "level": "intermediate"
+    },
+    {
+        "word": "celebrate",
+        "meaning": "祝う",
+        "level": "intermediate"
+    },
+    {
+        "word": "century",
+        "meaning": "世紀",
+        "level": "intermediate"
+    },
+    {
+        "word": "certain",
+        "meaning": "確信して",
+        "level": "intermediate"
+    },
+    {
+        "word": "challenge",
+        "meaning": "挑戦",
+        "level": "intermediate"
+    },
+    {
+        "word": "chance",
+        "meaning": "機会",
+        "level": "intermediate"
+    },
+    {
+        "word": "change",
+        "meaning": "変える",
+        "level": "intermediate"
+    },
+    {
+        "word": "character",
+        "meaning": "性格",
+        "level": "intermediate"
+    },
+    {
+        "word": "charge",
+        "meaning": "料金、請求する",
+        "level": "intermediate"
+    },
+    {
+        "word": "charity",
+        "meaning": "慈善",
+        "level": "intermediate"
+    },
+    {
+        "word": "check",
+        "meaning": "確認する",
+        "level": "intermediate"
+    },
+    {
+        "word": "choice",
+        "meaning": "選択",
+        "level": "intermediate"
+    },
+    {
+        "word": "choose",
+        "meaning": "選ぶ",
+        "level": "intermediate"
+    },
+    {
+        "word": "citizen",
+        "meaning": "市民",
+        "level": "intermediate"
+    },
+    {
+        "word": "city",
+        "meaning": "都市",
+        "level": "intermediate"
+    },
+    {
+        "word": "claim",
+        "meaning": "主張する",
+        "level": "intermediate"
+    },
+    {
+        "word": "class",
+        "meaning": "クラス、授業",
+        "level": "intermediate"
+    },
+    {
+        "word": "clear",
+        "meaning": "明確な",
+        "level": "intermediate"
+    },
+    {
+        "word": "clerk",
+        "meaning": "店員",
+        "level": "intermediate"
+    },
+    {
+        "word": "clever",
+        "meaning": "利口な",
+        "level": "intermediate"
+    },
+    {
+        "word": "climate",
+        "meaning": "気候",
+        "level": "intermediate"
+    },
+    {
+        "word": "climb",
+        "meaning": "登る",
+        "level": "intermediate"
+    },
+    {
+        "word": "coach",
+        "meaning": "コーチ",
+        "level": "intermediate"
+    },
+    {
+        "word": "coast",
+        "meaning": "海岸",
+        "level": "intermediate"
+    },
+    {
+        "word": "coin",
+        "meaning": "硬貨",
+        "level": "intermediate"
+    },
+    {
+        "word": "collect",
+        "meaning": "集める",
+        "level": "intermediate"
+    },
+    {
+        "word": "college",
+        "meaning": "大学",
+        "level": "intermediate"
+    },
+    {
+        "word": "colleague",
+        "meaning": "同僚",
+        "level": "intermediate"
+    },
+    {
+        "word": "colony",
+        "meaning": "植民地",
+        "level": "intermediate"
+    },
+    {
+        "word": "color",
+        "meaning": "色",
+        "level": "intermediate"
+    },
+    {
+        "word": "combine",
+        "meaning": "結合する",
+        "level": "intermediate"
+    },
+    {
+        "word": "comfort",
+        "meaning": "快適さ",
+        "level": "intermediate"
+    },
+    {
+        "word": "command",
+        "meaning": "命令",
+        "level": "intermediate"
+    },
+    {
+        "word": "comment",
+        "meaning": "コメント",
+        "level": "intermediate"
+    },
+    {
+        "word": "company",
+        "meaning": "会社",
+        "level": "intermediate"
+    },
+    {
+        "word": "compare",
+        "meaning": "比較する",
+        "level": "intermediate"
+    },
+    {
+        "word": "compete",
+        "meaning": "競争する",
+        "level": "intermediate"
+    },
+    {
+        "word": "complain",
+        "meaning": "不平を言う",
+        "level": "intermediate"
+    },
+    {
+        "word": "complete",
+        "meaning": "完了する",
+        "level": "intermediate"
+    },
+    {
+        "word": "compose",
+        "meaning": "構成する",
+        "level": "intermediate"
+    },
+    {
+        "word": "concern",
+        "meaning": "懸念",
+        "level": "intermediate"
+    },
+    {
+        "word": "concert",
+        "meaning": "コンサート",
+        "level": "intermediate"
+    },
+    {
+        "word": "conclude",
+        "meaning": "結論づける",
+        "level": "intermediate"
+    },
+    {
+        "word": "condition",
+        "meaning": "条件、状態",
+        "level": "intermediate"
+    },
+    {
+        "word": "conduct",
+        "meaning": "行う",
+        "level": "intermediate"
+    },
+    {
+        "word": "confidence",
+        "meaning": "自信",
+        "level": "intermediate"
+    },
+    {
+        "word": "confirm",
+        "meaning": "確認する",
+        "level": "intermediate"
+    },
+    {
+        "word": "conflict",
+        "meaning": "衝突",
+        "level": "intermediate"
+    },
+    {
+        "word": "confuse",
+        "meaning": "混乱させる",
+        "level": "intermediate"
+    },
+    {
+        "word": "congratulate",
+        "meaning": "祝う",
+        "level": "intermediate"
+    },
+    {
+        "word": "connect",
+        "meaning": "接続する",
+        "level": "intermediate"
+    },
+    {
+        "word": "conscious",
+        "meaning": "意識している",
+        "level": "intermediate"
+    },
+    {
+        "word": "consider",
+        "meaning": "考慮する",
+        "level": "intermediate"
+    },
+    {
+        "word": "consist",
+        "meaning": "から成る",
+        "level": "intermediate"
+    },
+    {
+        "word": "contain",
+        "meaning": "含む",
+        "level": "intermediate"
+    },
+    {
+        "word": "content",
+        "meaning": "内容",
+        "level": "intermediate"
+    },
+    {
+        "word": "contest",
+        "meaning": "コンテスト",
+        "level": "intermediate"
+    },
+    {
+        "word": "continue",
+        "meaning": "続ける",
+        "level": "intermediate"
+    },
+    {
+        "word": "contract",
+        "meaning": "契約",
+        "level": "intermediate"
+    },
+    {
+        "word": "control",
+        "meaning": "管理する",
+        "level": "intermediate"
+    },
+    {
+        "word": "convenient",
+        "meaning": "便利な",
+        "level": "intermediate"
+    },
+    {
+        "word": "conversation",
+        "meaning": "会話",
+        "level": "intermediate"
+    },
+    {
+        "word": "convert",
+        "meaning": "変換する",
+        "level": "intermediate"
+    },
+    {
+        "word": "convince",
+        "meaning": "納得させる",
+        "level": "intermediate"
+    },
+    {
+        "word": "cook",
+        "meaning": "料理する",
+        "level": "intermediate"
+    },
+    {
+        "word": "cooperate",
+        "meaning": "協力する",
+        "level": "intermediate"
+    },
+    {
+        "word": "copy",
+        "meaning": "コピー",
+        "level": "intermediate"
+    },
+    {
+        "word": "corner",
+        "meaning": "角",
+        "level": "intermediate"
+    },
+    {
+        "word": "correct",
+        "meaning": "正しい",
+        "level": "intermediate"
+    },
+    {
+        "word": "cost",
+        "meaning": "費用",
+        "level": "intermediate"
+    },
+    {
+        "word": "cotton",
+        "meaning": "綿",
+        "level": "intermediate"
+    },
+    {
+        "word": "cough",
+        "meaning": "咳",
+        "level": "intermediate"
+    },
+    {
+        "word": "count",
+        "meaning": "数える",
+        "level": "intermediate"
+    },
+    {
+        "word": "country",
+        "meaning": "国",
+        "level": "intermediate"
+    },
+    {
+        "word": "couple",
+        "meaning": "カップル",
+        "level": "intermediate"
+    },
+    {
+        "word": "courage",
+        "meaning": "勇気",
+        "level": "intermediate"
+    },
+    {
+        "word": "course",
+        "meaning": "コース",
+        "level": "intermediate"
+    },
+    {
+        "word": "court",
+        "meaning": "裁判所、コート",
+        "level": "intermediate"
+    },
+    {
+        "word": "cousin",
+        "meaning": "いとこ",
+        "level": "intermediate"
+    },
+    {
+        "word": "cover",
+        "meaning": "覆う",
+        "level": "intermediate"
+    },
+    {
+        "word": "cow",
+        "meaning": "牛",
+        "level": "intermediate"
+    },
+    {
+        "word": "crash",
+        "meaning": "衝突する",
+        "level": "intermediate"
+    },
+    {
+        "word": "create",
+        "meaning": "創造する",
+        "level": "intermediate"
+    },
+    {
+        "word": "creative",
+        "meaning": "創造的な",
+        "level": "intermediate"
+    },
+    {
+        "word": "credit",
+        "meaning": "信用",
+        "level": "intermediate"
+    },
+    {
+        "word": "crew",
+        "meaning": "乗組員",
+        "level": "intermediate"
+    },
+    {
+        "word": "crime",
+        "meaning": "犯罪",
+        "level": "intermediate"
+    },
+    {
+        "word": "crisis",
+        "meaning": "危機",
+        "level": "intermediate"
+    },
+    {
+        "word": "critic",
+        "meaning": "批評家",
+        "level": "intermediate"
+    },
+    {
+        "word": "crop",
+        "meaning": "作物",
+        "level": "intermediate"
+    },
+    {
+        "word": "cross",
+        "meaning": "渡る",
+        "level": "intermediate"
+    },
+    {
+        "word": "crowd",
+        "meaning": "群衆",
+        "level": "intermediate"
+    },
+    {
+        "word": "cruel",
+        "meaning": "残酷な",
+        "level": "intermediate"
+    },
+    {
+        "word": "cry",
+        "meaning": "泣く",
+        "level": "intermediate"
+    },
+    {
+        "word": "culture",
+        "meaning": "文化",
+        "level": "intermediate"
+    },
+    {
+        "word": "cupboard",
+        "meaning": "食器棚",
+        "level": "intermediate"
+    },
+    {
+        "word": "cure",
+        "meaning": "治療する",
+        "level": "intermediate"
+    },
+    {
+        "word": "curious",
+        "meaning": "好奇心旺盛な",
+        "level": "intermediate"
+    },
+    {
+        "word": "currency",
+        "meaning": "通貨",
+        "level": "intermediate"
+    },
+    {
+        "word": "current",
+        "meaning": "現在の",
+        "level": "intermediate"
+    },
+    {
+        "word": "curtain",
+        "meaning": "カーテン",
+        "level": "intermediate"
+    },
+    {
+        "word": "custom",
+        "meaning": "習慣",
+        "level": "intermediate"
+    },
+    {
+        "word": "customer",
+        "meaning": "顧客",
+        "level": "intermediate"
+    },
+    {
+        "word": "cycle",
+        "meaning": "自転車に乗る",
+        "level": "intermediate"
+    },
+    {
+        "word": "daily",
+        "meaning": "日々の",
+        "level": "intermediate"
+    },
+    {
+        "word": "damage",
+        "meaning": "損害",
+        "level": "intermediate"
+    },
+    {
+        "word": "danger",
+        "meaning": "危険",
+        "level": "intermediate"
+    },
+    {
+        "word": "dangerous",
+        "meaning": "危険な",
+        "level": "intermediate"
+    },
+    {
+        "word": "accomplish",
+        "meaning": "成し遂げる",
+        "level": "intermediate"
+    },
+    {
+        "word": "analyze",
+        "meaning": "分析する",
+        "level": "intermediate"
+    },
+    {
+        "word": "criticize",
+        "meaning": "批判する",
+        "level": "intermediate"
+    },
+    {
+        "word": "abandon",
+        "meaning": "捨てる",
+        "level": "intermediate"
+    },
+    {
+        "word": "abolish",
+        "meaning": "廃止する",
+        "level": "intermediate"
+    },
+    {
+        "word": "abrupt",
+        "meaning": "突然の",
+        "level": "intermediate"
+    },
+    {
+        "word": "absolute",
+        "meaning": "絶対的な",
+        "level": "intermediate"
+    },
+    {
+        "word": "absorb",
+        "meaning": "吸収する",
+        "level": "intermediate"
+    },
+    {
+        "word": "abstract",
+        "meaning": "抽象的な",
+        "level": "intermediate"
+    },
+    {
+        "word": "absurd",
+        "meaning": "不条理な",
+        "level": "intermediate"
+    },
+    {
+        "word": "abundance",
+        "meaning": "豊富",
+        "level": "intermediate"
+    },
+    {
+        "word": "abuse",
+        "meaning": "虐待",
+        "level": "intermediate"
+    },
+    {
+        "word": "academic",
+        "meaning": "学問的な",
+        "level": "intermediate"
+    },
+    {
+        "word": "accelerate",
+        "meaning": "加速する",
+        "level": "intermediate"
+    },
+    {
+        "word": "accent",
+        "meaning": "アクセント",
+        "level": "intermediate"
+    },
+    {
+        "word": "accessible",
+        "meaning": "接近できる",
+        "level": "intermediate"
+    },
+    {
+        "word": "accident",
+        "meaning": "事故",
+        "level": "intermediate"
+    },
+    {
+        "word": "accompany",
+        "meaning": "同行する",
+        "level": "advanced"
+    },
+    {
+        "word": "accomplishment",
+        "meaning": "成果",
+        "level": "advanced"
+    },
+    {
+        "word": "accord",
+        "meaning": "一致する",
+        "level": "advanced"
+    },
+    {
+        "word": "account",
+        "meaning": "口座、説明",
+        "level": "advanced"
+    },
+    {
+        "word": "accurate",
+        "meaning": "正確な",
+        "level": "advanced"
+    },
+    {
+        "word": "accuse",
+        "meaning": "非難する",
+        "level": "advanced"
+    },
+    {
+        "word": "accustomed",
+        "meaning": "慣れている",
+        "level": "advanced"
+    },
+    {
+        "word": "ache",
+        "meaning": "痛み",
+        "level": "advanced"
+    },
+    {
+        "word": "achieve",
+        "meaning": "達成する",
+        "level": "advanced"
+    },
+    {
+        "word": "achievement",
+        "meaning": "業績",
+        "level": "advanced"
+    },
+    {
+        "word": "acid",
+        "meaning": "酸",
+        "level": "advanced"
+    },
+    {
+        "word": "acknowledge",
+        "meaning": "認める",
+        "level": "advanced"
+    },
+    {
+        "word": "acquire",
+        "meaning": "獲得する",
+        "level": "advanced"
+    },
+    {
+        "word": "acquisition",
+        "meaning": "獲得",
+        "level": "advanced"
+    },
+    {
+        "word": "across",
+        "meaning": "を横切って",
+        "level": "advanced"
+    },
+    {
+        "word": "act",
+        "meaning": "行動する",
+        "level": "advanced"
+    },
+    {
+        "word": "action",
+        "meaning": "行動",
+        "level": "advanced"
+    },
+    {
+        "word": "active",
+        "meaning": "活発な",
+        "level": "advanced"
+    },
+    {
+        "word": "activity",
+        "meaning": "活動",
+        "level": "advanced"
+    },
+    {
+        "word": "actor",
+        "meaning": "俳優",
+        "level": "advanced"
+    },
+    {
+        "word": "actress",
+        "meaning": "女優",
+        "level": "advanced"
+    },
+    {
+        "word": "actual",
+        "meaning": "実際の",
+        "level": "advanced"
+    },
+    {
+        "word": "adapt",
+        "meaning": "適応させる",
+        "level": "advanced"
+    },
+    {
+        "word": "add",
+        "meaning": "加える",
+        "level": "advanced"
+    },
+    {
+        "word": "addiction",
+        "meaning": "中毒",
+        "level": "advanced"
+    },
+    {
+        "word": "addition",
+        "meaning": "追加",
+        "level": "advanced"
+    },
+    {
+        "word": "additional",
+        "meaning": "追加の",
+        "level": "advanced"
+    },
+    {
+        "word": "address",
+        "meaning": "住所、演説",
+        "level": "advanced"
+    },
+    {
+        "word": "adequate",
+        "meaning": "十分な",
+        "level": "advanced"
+    },
+    {
+        "word": "adjust",
+        "meaning": "調整する",
+        "level": "advanced"
+    },
+    {
+        "word": "administration",
+        "meaning": "行政、管理",
+        "level": "advanced"
+    },
+    {
+        "word": "admire",
+        "meaning": "賞賛する",
+        "level": "advanced"
+    },
+    {
+        "word": "admission",
+        "meaning": "入場、認めること",
+        "level": "advanced"
+    },
+    {
+        "word": "admit",
+        "meaning": "認める",
+        "level": "advanced"
+    },
+    {
+        "word": "adolescent",
+        "meaning": "青年期の",
+        "level": "advanced"
+    },
+    {
+        "word": "adopt",
+        "meaning": "採用する",
+        "level": "advanced"
+    },
+    {
+        "word": "adore",
+        "meaning": "熱愛する",
+        "level": "advanced"
+    },
+    {
+        "word": "adult",
+        "meaning": "大人",
+        "level": "advanced"
+    },
+    {
+        "word": "advance",
+        "meaning": "前進",
+        "level": "advanced"
+    },
+    {
+        "word": "advanced",
+        "meaning": "進んだ",
+        "level": "advanced"
+    },
+    {
+        "word": "advantage",
+        "meaning": "利点",
+        "level": "advanced"
+    },
+    {
+        "word": "adventure",
+        "meaning": "冒険",
+        "level": "advanced"
+    },
+    {
+        "word": "adverb",
+        "meaning": "副詞",
+        "level": "advanced"
+    },
+    {
+        "word": "advertise",
+        "meaning": "広告する",
+        "level": "advanced"
+    },
+    {
+        "word": "advertisement",
+        "meaning": "広告",
+        "level": "advanced"
+    },
+    {
+        "word": "advocate",
+        "meaning": "主張する",
+        "level": "advanced"
+    },
+    {
+        "word": "affair",
+        "meaning": "事件、事柄",
+        "level": "advanced"
+    },
+    {
+        "word": "affect",
+        "meaning": "影響を与える",
+        "level": "advanced"
+    },
+    {
+        "word": "affection",
+        "meaning": "愛情",
+        "level": "advanced"
+    },
+    {
+        "word": "afford",
+        "meaning": "余裕がある",
+        "level": "advanced"
+    },
+    {
+        "word": "afraid",
+        "meaning": "恐れて",
+        "level": "advanced"
+    },
+    {
+        "word": "after",
+        "meaning": "の後で",
+        "level": "advanced"
+    },
+    {
+        "word": "afterward",
+        "meaning": "その後",
+        "level": "advanced"
+    },
+    {
+        "word": "again",
+        "meaning": "再び",
+        "level": "advanced"
+    },
+    {
+        "word": "against",
+        "meaning": "に対して",
+        "level": "advanced"
+    },
+    {
+        "word": "age",
+        "meaning": "年齢",
+        "level": "advanced"
+    },
+    {
+        "word": "agency",
+        "meaning": "代理店",
+        "level": "advanced"
+    },
+    {
+        "word": "agenda",
+        "meaning": "議題",
+        "level": "advanced"
+    },
+    {
+        "word": "agent",
+        "meaning": "代理人",
+        "level": "advanced"
+    },
+    {
+        "word": "aggressive",
+        "meaning": "攻撃的な",
+        "level": "advanced"
+    },
+    {
+        "word": "ago",
+        "meaning": "前に",
+        "level": "advanced"
+    },
+    {
+        "word": "agony",
+        "meaning": "苦痛",
+        "level": "advanced"
+    },
+    {
+        "word": "agreement",
+        "meaning": "同意",
+        "level": "advanced"
+    },
+    {
+        "word": "agriculture",
+        "meaning": "農業",
+        "level": "advanced"
+    },
+    {
+        "word": "ahead",
+        "meaning": "前方へ",
+        "level": "advanced"
+    },
+    {
+        "word": "aid",
+        "meaning": "援助",
+        "level": "advanced"
+    },
+    {
+        "word": "aim",
+        "meaning": "目的",
+        "level": "advanced"
+    },
+    {
+        "word": "air",
+        "meaning": "空気",
+        "level": "advanced"
+    },
+    {
+        "word": "aircraft",
+        "meaning": "航空機",
+        "level": "advanced"
+    },
+    {
+        "word": "airline",
+        "meaning": "航空会社",
+        "level": "advanced"
+    },
+    {
+        "word": "airport",
+        "meaning": "空港",
+        "level": "advanced"
+    },
+    {
+        "word": "alarm",
+        "meaning": "警報",
+        "level": "advanced"
+    },
+    {
+        "word": "album",
+        "meaning": "アルバム",
+        "level": "advanced"
+    },
+    {
+        "word": "alcohol",
+        "meaning": "アルコール",
+        "level": "advanced"
+    },
+    {
+        "word": "alert",
+        "meaning": "油断のない",
+        "level": "advanced"
+    },
+    {
+        "word": "alien",
+        "meaning": "外国の、宇宙人",
+        "level": "advanced"
+    },
+    {
+        "word": "alike",
+        "meaning": "同様に",
+        "level": "advanced"
+    },
+    {
+        "word": "alive",
+        "meaning": "生きている",
+        "level": "advanced"
+    },
+    {
+        "word": "all",
+        "meaning": "すべての",
+        "level": "advanced"
+    },
+    {
+        "word": "alliance",
+        "meaning": "同盟",
+        "level": "advanced"
+    },
+    {
+        "word": "allocate",
+        "meaning": "割り当てる",
+        "level": "advanced"
+    },
+    {
+        "word": "allot",
+        "meaning": "割り当てる",
+        "level": "advanced"
+    },
+    {
+        "word": "allowance",
+        "meaning": "手当",
+        "level": "advanced"
+    },
+    {
+        "word": "alloy",
+        "meaning": "合金",
+        "level": "advanced"
+    },
+    {
+        "word": "almost",
+        "meaning": "ほとんど",
+        "level": "advanced"
+    },
+    {
+        "word": "alone",
+        "meaning": "ひとりで",
+        "level": "advanced"
+    },
+    {
+        "word": "along",
+        "meaning": "に沿って",
+        "level": "advanced"
+    },
+    {
+        "word": "alongside",
+        "meaning": "と並んで",
+        "level": "advanced"
+    },
+    {
+        "word": "aloud",
+        "meaning": "声に出して",
+        "level": "advanced"
+    },
+    {
+        "word": "alphabet",
+        "meaning": "アルファベット",
+        "level": "advanced"
+    },
+    {
+        "word": "already",
+        "meaning": "すでに",
+        "level": "advanced"
+    },
+    {
+        "word": "also",
+        "meaning": "もまた",
+        "level": "advanced"
+    },
+    {
+        "word": "alter",
+        "meaning": "変える",
+        "level": "advanced"
+    },
+    {
+        "word": "alternative",
+        "meaning": "選択肢",
+        "level": "advanced"
+    },
+    {
+        "word": "although",
+        "meaning": "だけれども",
+        "level": "advanced"
+    },
+    {
+        "word": "altogether",
+        "meaning": "完全に",
+        "level": "advanced"
+    },
+    {
+        "word": "aluminum",
+        "meaning": "アルミニウム",
+        "level": "advanced"
+    },
+    {
+        "word": "always",
+        "meaning": "いつも",
+        "level": "advanced"
+    },
+    {
+        "word": "amateur",
+        "meaning": "アマチュア",
+        "level": "advanced"
+    },
+    {
+        "word": "amaze",
+        "meaning": "驚かせる",
+        "level": "advanced"
+    },
+    {
+        "word": "amazing",
+        "meaning": "驚くべき",
+        "level": "advanced"
+    },
+    {
+        "word": "ambassador",
+        "meaning": "大使",
+        "level": "advanced"
+    },
+    {
+        "word": "ambition",
+        "meaning": "野心",
+        "level": "advanced"
+    },
+    {
+        "word": "ambitious",
+        "meaning": "野心的な",
+        "level": "advanced"
+    },
+    {
+        "word": "ambulance",
+        "meaning": "救急車",
+        "level": "advanced"
+    },
+    {
+        "word": "amend",
+        "meaning": "改正する",
+        "level": "advanced"
+    },
+    {
+        "word": "amiable",
+        "meaning": "愛想の良い",
+        "level": "advanced"
+    },
+    {
+        "word": "amid",
+        "meaning": "の真ん中に",
+        "level": "advanced"
+    },
+    {
+        "word": "among",
+        "meaning": "の間に",
+        "level": "advanced"
+    },
+    {
+        "word": "ample",
+        "meaning": "十分な",
+        "level": "advanced"
+    },
+    {
+        "word": "amuse",
+        "meaning": "楽しませる",
+        "level": "advanced"
+    },
+    {
+        "word": "amusement",
+        "meaning": "娯楽",
+        "level": "advanced"
+    },
+    {
+        "word": "analogy",
+        "meaning": "類推",
+        "level": "advanced"
+    },
+    {
+        "word": "analysis",
+        "meaning": "分析",
+        "level": "advanced"
+    },
+    {
+        "word": "analyst",
+        "meaning": "分析家",
+        "level": "advanced"
+    },
+    {
+        "word": "ancestor",
+        "meaning": "先祖",
+        "level": "advanced"
+    },
+    {
+        "word": "anchor",
+        "meaning": "錨",
+        "level": "advanced"
+    },
+    {
+        "word": "ancient",
+        "meaning": "古代の",
+        "level": "advanced"
+    },
+    {
+        "word": "and",
+        "meaning": "そして",
+        "level": "advanced"
+    },
+    {
+        "word": "anecdote",
+        "meaning": "逸話",
+        "level": "advanced"
+    },
+    {
+        "word": "angel",
+        "meaning": "天使",
+        "level": "advanced"
+    },
+    {
+        "word": "anger",
+        "meaning": "怒り",
+        "level": "advanced"
+    },
+    {
+        "word": "angle",
+        "meaning": "角度",
+        "level": "advanced"
+    },
+    {
+        "word": "angrily",
+        "meaning": "怒って",
+        "level": "advanced"
+    },
+    {
+        "word": "anguish",
+        "meaning": "苦悩",
+        "level": "advanced"
+    },
+    {
+        "word": "rough",
+        "meaning": "粗い",
+        "level": "advanced"
+    },
+    {
+        "word": "round",
+        "meaning": "丸い",
+        "level": "advanced"
+    },
+    {
+        "word": "route",
+        "meaning": "経路",
+        "level": "advanced"
+    },
+    {
+        "word": "row",
+        "meaning": "列",
+        "level": "advanced"
+    },
+    {
+        "word": "royal",
+        "meaning": "王室の",
+        "level": "advanced"
+    },
+    {
+        "word": "rub",
+        "meaning": "こする",
+        "level": "advanced"
+    },
+    {
+        "word": "rubber",
+        "meaning": "ゴム",
+        "level": "advanced"
+    },
+    {
+        "word": "rude",
+        "meaning": "失礼な",
+        "level": "advanced"
+    },
+    {
+        "word": "ruin",
+        "meaning": "台無しにする",
+        "level": "advanced"
+    },
+    {
+        "word": "rule",
+        "meaning": "規則",
+        "level": "advanced"
+    },
+    {
+        "word": "ruler",
+        "meaning": "定規",
+        "level": "advanced"
+    },
+    {
+        "word": "rumor",
+        "meaning": "噂",
+        "level": "advanced"
+    },
+    {
+        "word": "rural",
+        "meaning": "田舎の",
+        "level": "advanced"
+    },
+    {
+        "word": "rush",
+        "meaning": "急ぐ",
+        "level": "advanced"
+    },
+    {
+        "word": "sack",
+        "meaning": "袋",
+        "level": "advanced"
+    },
+    {
+        "word": "sacred",
+        "meaning": "神聖な",
+        "level": "advanced"
+    },
+    {
+        "word": "sadness",
+        "meaning": "悲しみ",
+        "level": "advanced"
+    },
+    {
+        "word": "safe",
+        "meaning": "安全な",
+        "level": "advanced"
+    },
+    {
+        "word": "safety",
+        "meaning": "安全",
+        "level": "advanced"
+    },
+    {
+        "word": "sail",
+        "meaning": "航海する",
+        "level": "advanced"
+    },
+    {
+        "word": "sailor",
+        "meaning": "船乗り",
+        "level": "advanced"
+    },
+    {
+        "word": "protect",
+        "meaning": "保護する",
+        "level": "advanced"
+    },
+    {
+        "word": "provide",
+        "meaning": "提供する",
+        "level": "advanced"
+    },
+    {
+        "word": "receive",
+        "meaning": "受け取る",
+        "level": "advanced"
+    },
+    {
+        "word": "reduce",
+        "meaning": "減らす",
+        "level": "advanced"
+    },
+    {
+        "word": "remain",
+        "meaning": "残る",
+        "level": "advanced"
+    },
+    {
+        "word": "remember",
+        "meaning": "覚えている",
+        "level": "advanced"
+    },
+    {
+        "word": "remove",
+        "meaning": "取り除く",
+        "level": "advanced"
+    },
+    {
+        "word": "repeat",
+        "meaning": "繰り返す",
+        "level": "advanced"
+    },
+    {
+        "word": "replace",
+        "meaning": "取り替える",
+        "level": "advanced"
+    },
+    {
+        "word": "reply",
+        "meaning": "返事する",
+        "level": "advanced"
+    },
+    {
+        "word": "report",
+        "meaning": "報告する",
+        "level": "advanced"
+    },
+    {
+        "word": "request",
+        "meaning": "要請する",
+        "level": "advanced"
+    },
+    {
+        "word": "require",
+        "meaning": "必要とする",
+        "level": "advanced"
+    },
+    {
+        "word": "rescue",
+        "meaning": "救助する",
+        "level": "advanced"
+    }
+];
+
+let currentFilter = 'all';
+let quizWords = [];
+let currentQuestionIndex = 0;
+let score = 0;
+let totalQuestionsRequested = 10;
+let isAnswered = false;
+
+function setFilter(level) {
+    currentFilter = level;
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+}
+
+function startQuiz() {
+    const inputCount = parseInt(document.getElementById('quiz-count').value);
+    if (isNaN(inputCount) || inputCount <= 0) {
+        alert('正しい問題数を入力してにゃ！');
+        return;
+    }
+
+    // フィルタリング
+    let filtered = [];
+    if (currentFilter === 'all') {
+        filtered = [...wordDatabase];
+    } else {
+        filtered = wordDatabase.filter(w => w.level === currentFilter);
+    }
+
+    if (filtered.length === 0) {
+        alert('該当する単語がありませんにゃ。');
+        return;
+    }
+
+    // シャッフル
+    filtered.sort(() => Math.random() - 0.5);
+    
+    totalQuestionsRequested = Math.min(inputCount, filtered.length);
+    quizWords = filtered.slice(0, totalQuestionsRequested);
+    
+    currentQuestionIndex = 0;
+    score = 0;
+    
+    document.getElementById('home-screen').classList.add('hidden');
+    document.getElementById('result-screen').classList.add('hidden');
+    document.getElementById('quiz-screen').classList.remove('hidden');
+    
+    showQuestion();
+}
+
+function showQuestion() {
+    isAnswered = false;
+    const currentWordObj = quizWords[currentQuestionIndex];
+    
+    // プログレス表示
+    const levelJa = currentWordObj.level === 'beginner' ? '初級' : currentWordObj.level === 'intermediate' ? '中級' : '上級';
+    document.getElementById('progress-display').textContent = `第 ${currentQuestionIndex + 1} 問 / ${totalQuestionsRequested} 問 [${levelJa}]`;
+    
+    // 単語表示（余計な文字は一切なし）
+    document.getElementById('target-word').textContent = currentWordObj.word;
+    
+    // 選択肢の作成（誤答をデータベース全体からランダム抽出、重複なし）
+    let incorrectChoices = wordDatabase
+        .filter(w => w.meaning !== currentWordObj.meaning)
+        .map(w => w.meaning);
+    
+    // ユニークな誤答を3つ選ぶ
+    incorrectChoices = [...new Set(incorrectChoices)];
+    incorrectChoices.sort(() => Math.random() - 0.5);
+    const finalChoices = incorrectChoices.slice(0, 3);
+    finalChoices.push(currentWordObj.meaning);
+    finalChoices.sort(() => Math.random() - 0.5);
+    
+    const optionsBox = document.getElementById('options-box');
+    optionsBox.innerHTML = '';
+    
+    finalChoices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = choice; // 綺麗な日本語のみ表示
+        btn.onclick = () => selectOption(btn, choice, currentWordObj.meaning);
+        optionsBox.appendChild(btn);
+    });
+}
+
+function selectOption(selectedBtn, chosenMeaning, correctMeaning) {
+    if (isAnswered) return;
+    isAnswered = true;
+    
+    const buttons = document.querySelectorAll('.option-btn');
+    
+    if (chosenMeaning === correctMeaning) {
+        selectedBtn.classList.add('correct');
+        score++;
+    } else {
+        selectedBtn.classList.add('incorrect');
+        // 正解のボタンを緑色にする
+        buttons.forEach(btn => {
+            if (btn.textContent === correctMeaning) {
+                btn.classList.add('correct');
+            }
+        });
+    }
+    
+    // 1.5秒後に次の問題、または結果画面へ
+    setTimeout(() => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < totalQuestionsRequested) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }, 1200);
+}
+
+function showResult() {
+    document.getElementById('quiz-screen').classList.add('hidden');
+    document.getElementById('result-screen').classList.remove('hidden');
+    document.getElementById('score-display').textContent = `${totalQuestionsRequested}問中 ${score}問正解！`;
+}
+
+function confirmGoHome() {
+    if (confirm('データが消えるけど大丈夫かニャ？')) {
+        backToHome();
+    }
+}
+
+function backToHome() {
+    document.getElementById('quiz-screen').classList.add('hidden');
+    document.getElementById('result-screen').classList.add('hidden');
+    document.getElementById('home-screen').classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>
